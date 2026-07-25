@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480" fill="none">
-  <rect width="640" height="480" fill="#E8EEF5"/>
-  <rect x="250" y="320" width="140" height="90" rx="8" fill="#F5F7FA" stroke="#9AA8B8" stroke-width="3"/>
-  <rect x="80" y="80" width="120" height="55" rx="8" fill="#F5F7FA" stroke="#9AA8B8" stroke-width="3"/>
-  <rect x="260" y="80" width="120" height="55" rx="8" fill="#F5F7FA" stroke="#9AA8B8" stroke-width="3"/>
-  <rect x="440" y="80" width="120" height="55" rx="8" fill="#F5F7FA" stroke="#9AA8B8" stroke-width="3"/>
-  <path d="M140 135V220H320V135M320 220H500V135M320 220V320" stroke="#3B82F6" stroke-width="4" stroke-linecap="round"/>
-  <text x="320" y="460" text-anchor="middle" fill="#7A8A9A" font-family="Arial, sans-serif" font-size="18">Multi-Room Intelligence</text>
-</svg>
