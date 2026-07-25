@@ -1,0 +1,363 @@
+.cooling-plan {
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+  padding-block: 28px;
+
+  background-color: #f4f8fb;
+
+  font-family: var(--font-primary), "Inter", sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.cooling-plan::before {
+  content: "";
+
+  position: absolute;
+  top: -10%;
+  right: -8%;
+  z-index: 0;
+
+  width: min(52vw, 640px);
+  height: 70%;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(ellipse 55% 40% at 70% 30%, rgba(125, 178, 240, 0.22), transparent 70%),
+    radial-gradient(ellipse 40% 50% at 85% 55%, rgba(183, 204, 244, 0.35), transparent 72%);
+  opacity: 0.95;
+}
+
+.cooling-plan::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+
+  width: min(48vw, 560px);
+  height: 280px;
+
+  pointer-events: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 560 280' fill='none'%3E%3Cpath d='M40 40c80 10 120 70 200 60s140-50 220-20 90 80 140 70' stroke='%239ebce8' stroke-width='1.2' opacity='0.45'/%3E%3Cpath d='M20 90c90 0 130 55 210 45s150-35 230-10 100 55 150 45' stroke='%23b7ccf4' stroke-width='1.2' opacity='0.55'/%3E%3Cpath d='M60 150c70-20 130 30 200 20s140-45 210-15 90 50 130 40' stroke='%237db2f0' stroke-width='1.1' opacity='0.35'/%3E%3Cpath d='M0 200c100-10 150 40 240 30s160-50 250-20 90 40 140 30' stroke='%23cfe0f7' stroke-width='1.4' opacity='0.6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-size: cover;
+}
+
+.cooling-plan .container {
+  position: relative;
+  z-index: 1;
+
+  max-width: 1200px;
+  padding-inline: 0;
+}
+
+.cooling-plan__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.cooling-plan__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 35px;
+
+  padding-block: 12px 8px;
+}
+
+.cooling-plan__number {
+  flex-shrink: 0;
+
+  display: block;
+
+  margin: 0;
+  padding: 0;
+
+  color: #d0dff2;
+  font-family: var(--font-family-heading);
+  font-size: 148px;
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.045em;
+}
+
+.cooling-plan__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+  grid-template-areas:
+    "eyebrow ."
+    "title description";
+  align-items: start;
+  column-gap: 48px;
+  row-gap: 14px;
+
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.cooling-plan__eyebrow {
+  grid-area: eyebrow;
+
+  margin: 0;
+  padding: 0;
+
+  color: #1d67cd;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cooling-plan__eyebrow::after {
+  content: "";
+
+  display: block;
+  width: 42px;
+  height: 2px;
+  margin-top: 10px;
+
+  background: #1d67cd;
+}
+
+.cooling-plan__title {
+  grid-area: title;
+
+  margin: 0;
+  max-width: 520px;
+
+  color: #001a41;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.cooling-plan__description {
+  grid-area: description;
+
+  margin: 0;
+  max-width: 420px;
+  padding-top: 0;
+
+  color: #3d4f73;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.cooling-plan__panel {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    40px
+    minmax(0, 1fr)
+    40px
+    minmax(0, 1fr)
+    196px;
+  align-items: stretch;
+  gap: 0;
+
+  overflow: visible;
+  padding: 12px;
+
+  border: 1px solid #e8f0f6;
+  border-radius: 20px;
+
+  background: #ffffff;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+}
+
+.cooling-plan__card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+
+  padding: 36px 20px 28px;
+
+  background: transparent;
+  text-align: center;
+}
+
+.cooling-plan__badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+
+  display: grid;
+  place-items: center;
+
+  width: 26px;
+  height: 26px;
+
+  border-radius: 50%;
+
+  background: #0a6ce6;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cooling-plan__card-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 88px;
+  margin-bottom: 18px;
+
+  overflow: visible;
+}
+
+.cooling-plan__card-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 88px;
+  height: auto;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.cooling-plan__card-title {
+  margin: 0 0 8px;
+
+  color: #003181;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.cooling-plan__card-description {
+  margin: 0;
+  max-width: 210px;
+
+  color: #6e7eae;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.cooling-plan__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: start;
+  flex-shrink: 0;
+
+  width: 40px;
+  height: 88px;
+  margin-top: 36px;
+
+  pointer-events: none;
+}
+
+.cooling-plan__arrow-image {
+  display: block;
+  width: 36px;
+  height: 22px;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.cooling-plan__cta-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+
+  align-self: stretch;
+  margin: 0;
+  padding: 36px 18px;
+
+  border-radius: 16px;
+
+  background: #0a6ce6;
+
+  text-decoration: none;
+}
+
+.cooling-plan__cta-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 42px;
+
+  overflow: visible;
+}
+
+.cooling-plan__cta-image {
+  display: block;
+  width: auto;
+  max-width: 72px;
+  max-height: 42px;
+  height: auto;
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.cooling-plan__cta-button {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 148px;
+  min-height: 72px;
+  padding: 18px 16px;
+
+  border: 1.5px solid #ffffff;
+  border-radius: 12px;
+
+  background: transparent;
+  color: #ffffff;
+
+  font-family: var(--font-primary), "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.cooling-plan__cta-line {
+  display: block;
+}
+
+.cooling-plan__cta-card:hover .cooling-plan__cta-button {
+  background: #ffffff;
+  color: #0a6ce6;
+}
+
+.cooling-plan__cta-card:focus-visible {
+  outline: 2px solid #0a6ce6;
+  outline-offset: 3px;
+}

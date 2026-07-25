@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480" fill="none">
+  <rect width="640" height="480" fill="#E8EEF5"/>
+  <rect x="120" y="160" width="400" height="140" rx="12" fill="#6B7280"/>
+  <rect x="140" y="180" width="360" height="20" rx="4" fill="#9CA3AF"/>
+  <rect x="140" y="220" width="360" height="12" rx="3" fill="#4B5563"/>
+  <rect x="140" y="250" width="200" height="12" rx="3" fill="#4B5563"/>
+  <text x="320" y="460" text-anchor="middle" fill="#7A8A9A" font-family="Arial, sans-serif" font-size="18">Invisible Ducted Cooling</text>
+</svg>
