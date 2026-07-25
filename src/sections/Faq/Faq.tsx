@@ -122,7 +122,7 @@ const Faq = () => {
                 const isOpen = openId === item.id;
                 const panelId = `faq-panel-${item.id}`;
                 const buttonId = `faq-button-${item.id}`;
-                const Icon = iconMap[item.icon];
+                const Icon = iconMap[item.icon as keyof typeof iconMap];
 
                 return (
                   <div
