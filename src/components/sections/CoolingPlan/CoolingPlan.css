@@ -56,7 +56,7 @@
   z-index: 1;
 
   max-width: 1200px;
-  padding-inline: 0;
+  padding-inline: 1rem;
 }
 
 .cooling-plan__inner {
@@ -361,3 +361,118 @@
   outline: 2px solid #0a6ce6;
   outline-offset: 3px;
 }
+
+/* —— Responsive —— */
+
+@media (min-width: 48rem) {
+  .cooling-plan .container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  .cooling-plan .container {
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 79.99rem) {
+  .cooling-plan {
+    padding-block: 3rem;
+  }
+
+  .cooling-plan__header {
+    gap: 20px;
+  }
+
+  .cooling-plan__number {
+    font-size: clamp(4.5rem, 12vw, 7rem);
+  }
+
+  .cooling-plan__intro {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "eyebrow"
+      "title"
+      "description";
+    column-gap: 0;
+    row-gap: 12px;
+  }
+
+  .cooling-plan__title {
+    max-width: none;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+  }
+
+  .cooling-plan__description {
+    max-width: none;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .cooling-plan {
+    padding-block: 2.5rem;
+  }
+
+  .cooling-plan__header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cooling-plan__number {
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+}
+
+@media (max-width: 79.99rem) {
+  .cooling-plan__panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    padding: 1rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  }
+
+  .cooling-plan__arrow {
+    display: none;
+  }
+
+  .cooling-plan__card {
+    border: 1px solid #e8f0f6;
+    border-radius: 1rem;
+    background: #ffffff;
+    padding: 2rem 1.15rem 1.5rem;
+  }
+
+  .cooling-plan__cta-card {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.35rem;
+    box-shadow: 0 16px 36px rgba(10, 108, 230, 0.28);
+  }
+
+  .cooling-plan__cta-button {
+    max-width: none;
+    min-height: 3.5rem;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .cooling-plan__panel {
+    grid-template-columns: 1fr;
+  }
+
+  .cooling-plan__cta-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cooling-plan__cta-button {
+    width: 100%;
+  }
+}
+
+

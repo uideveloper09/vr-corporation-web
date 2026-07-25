@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 
+import SiteLoader from "@/components/ui/SiteLoader";
 import { homeSeo, siteConfig } from "@/data/site";
 
 import "./globals.css";
@@ -85,6 +86,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={inter.className} suppressHydrationWarning>
+        <SiteLoader />
         {children}
       </body>
     </html>

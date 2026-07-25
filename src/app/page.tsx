@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/ui/BackToTop";
 import WhatsAppFab from "@/components/ui/WhatsAppFab";
+import Reveal from "@/components/ui/Reveal";
 import ChatWidget from "@/components/chat";
 import JsonLd from "@/components/seo/JsonLd";
 import {
@@ -59,34 +60,62 @@ export default function HomePage() {
       <Header />
 
       <main>
-        <Hero />
+        <Reveal variant="fade" eager delay={160}>
+          <Hero />
+        </Reveal>
 
-        <ProductSolutions />
+        <Reveal variant="up" delay={40}>
+          <ProductSolutions />
+        </Reveal>
 
-        <IndustrySolutions />
+        <Reveal variant="up" delay={60}>
+          <IndustrySolutions />
+        </Reveal>
 
-        <WhyVr />
+        <Reveal variant="up" delay={40}>
+          <WhyVr />
+        </Reveal>
 
-        <CoolingPlan />
+        <Reveal variant="scale" delay={50}>
+          <CoolingPlan />
+        </Reveal>
 
-        <Showroom />
+        <Reveal variant="left" delay={40}>
+          <Showroom />
+        </Reveal>
 
-        <StayCool />
+        <Reveal variant="up" delay={40}>
+          <StayCool />
+        </Reveal>
 
-        <Testimonials />
+        <Reveal variant="up" delay={50}>
+          <Testimonials />
+        </Reveal>
 
-        <TrustedClients />
+        <Reveal variant="fade" delay={40}>
+          <TrustedClients />
+        </Reveal>
 
-        <ServiceArea />
+        <Reveal variant="right" delay={40}>
+          <ServiceArea />
+        </Reveal>
 
-        <Faq />
+        <Reveal variant="up" delay={50}>
+          <Faq />
+        </Reveal>
 
-        <FinalCta />
+        <Reveal variant="scale" delay={40}>
+          <FinalCta />
+        </Reveal>
 
-        <ContactVisit />
+        <Reveal variant="up" delay={60}>
+          <ContactVisit />
+        </Reveal>
       </main>
 
-      <Footer />
+      <Reveal variant="up" delay={40}>
+        <Footer />
+      </Reveal>
 
       <WhatsAppFab />
       <BackToTop />

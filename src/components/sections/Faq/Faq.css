@@ -312,6 +312,12 @@
   }
 }
 
+@media (max-width: 47.99rem) {
+  .faq__media {
+    display: none;
+  }
+}
+
 @media (max-width: 560px) {
   .faq__header {
     gap: 35px;

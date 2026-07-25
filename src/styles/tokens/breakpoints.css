@@ -1,7 +1,40 @@
 :root {
-  --breakpoint-sm: 40rem;
-  --breakpoint-md: 48rem;
-  --breakpoint-lg: 64rem;
-  --breakpoint-xl: 80rem;
-  --breakpoint-2xl: 96rem;
+  /* Align with Local Growth / developer helper breakpoints */
+  --bp-xs: 22.5rem; /* 360 */
+  --bp-sm: 30rem; /* 480 */
+  --bp-md: 48rem; /* 768 */
+  --bp-lg: 64rem; /* 1024 */
+  --bp-xl: 80rem; /* 1280 */
+  --bp-2xl: 90rem; /* 1440 */
+
+  /* Legacy aliases */
+  --breakpoint-sm: var(--bp-sm);
+  --breakpoint-md: var(--bp-md);
+  --breakpoint-lg: var(--bp-lg);
+  --breakpoint-xl: var(--bp-xl);
+  --breakpoint-2xl: var(--bp-2xl);
+
+  --section-pad-x: 1rem;
+  --section-pad-y: 3rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --section-pad-x: 1.5rem;
+    --section-pad-y: 4rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --section-pad-x: 2rem;
+    --section-pad-y: 5rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  :root {
+    --section-pad-x: 0;
+    --section-pad-y: 1.75rem;
+  }
 }

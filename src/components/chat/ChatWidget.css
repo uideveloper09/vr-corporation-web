@@ -1,7 +1,7 @@
 .chat-widget {
   position: fixed;
-  right: 28px;
-  bottom: 28px;
+  right: max(28px, env(safe-area-inset-right, 0px));
+  bottom: max(28px, calc(28px + env(safe-area-inset-bottom, 0px)));
   z-index: 45;
 
   display: flex;
@@ -602,13 +602,13 @@
 
 @media (max-width: 720px) {
   .chat-widget {
-    right: 16px;
-    bottom: 16px;
+    right: max(16px, env(safe-area-inset-right, 0px));
+    bottom: max(16px, calc(16px + env(safe-area-inset-bottom, 0px)));
   }
 
   .chat-widget__panel {
     width: min(100vw - 24px, 372px);
-    height: min(70vh, 520px);
+    height: min(70dvh, 520px);
   }
 
   .chat-widget__launcher {

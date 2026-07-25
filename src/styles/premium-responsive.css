@@ -1,0 +1,242 @@
+/* Premium responsive design system — fluid type, rhythm, touch, motion */
+
+:root {
+  --fluid-display: clamp(2rem, 1.35rem + 2.8vw, 3.125rem);
+  --fluid-heading: clamp(1.75rem, 1.25rem + 1.8vw, 2.5rem);
+  --fluid-subhead: clamp(1.05rem, 0.95rem + 0.45vw, 1.25rem);
+  --fluid-body: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  --fluid-eyebrow: clamp(0.6875rem, 0.65rem + 0.15vw, 0.8125rem);
+
+  --fluid-section-y: clamp(2.75rem, 2rem + 3vw, 5.5rem);
+  --fluid-section-gap: clamp(1.25rem, 1rem + 1.2vw, 2rem);
+  --fluid-card-gap: clamp(0.875rem, 0.65rem + 0.8vw, 1.25rem);
+  --fluid-card-radius: clamp(1rem, 0.85rem + 0.6vw, 1.25rem);
+  --fluid-number: clamp(3.25rem, 1.5rem + 8vw, 9.25rem);
+
+  --touch-min: 2.75rem;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-x: max(1rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Shared premium section rhythm */
+.product-solutions,
+.industry-solutions,
+.why-vr,
+.cooling-plan,
+.showroom,
+.stay-cool,
+.testimonials,
+.trusted-clients,
+.service-area,
+.faq,
+.final-cta,
+.contact-visit {
+  padding-block: var(--fluid-section-y);
+}
+
+.product-solutions__inner,
+.industry-solutions__inner,
+.why-vr__inner,
+.cooling-plan__inner,
+.showroom__inner,
+.stay-cool__inner,
+.testimonials__inner,
+.trusted-clients__inner {
+  gap: var(--fluid-section-gap);
+}
+
+/* Fluid section titles + numbers */
+.product-solutions__title,
+.industry-solutions__title,
+.why-vr__title,
+.cooling-plan__title,
+.showroom__title,
+.stay-cool__title,
+.testimonials__title,
+.trusted-clients__title,
+.service-area__title,
+.faq__title,
+.final-cta__title,
+.contact-visit__title {
+  font-size: var(--fluid-heading);
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.product-solutions__description,
+.industry-solutions__description,
+.why-vr__description,
+.cooling-plan__description,
+.showroom__description,
+.stay-cool__description,
+.testimonials__description,
+.trusted-clients__description,
+.service-area__description,
+.hero__description {
+  font-size: var(--fluid-body);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.product-solutions__eyebrow,
+.industry-solutions__eyebrow,
+.why-vr__eyebrow,
+.cooling-plan__eyebrow,
+.showroom__eyebrow,
+.stay-cool__eyebrow,
+.testimonials__eyebrow,
+.trusted-clients__eyebrow,
+.hero__badge {
+  font-size: var(--fluid-eyebrow);
+}
+
+.product-solutions__number,
+.industry-solutions__number,
+.why-vr__number,
+.cooling-plan__number,
+.showroom__number,
+.stay-cool__number,
+.testimonials__number,
+.trusted-clients__number,
+.service-area__number,
+.faq__number,
+.final-cta__number,
+.contact-visit__number {
+  font-size: var(--fluid-number);
+  opacity: 0.92;
+}
+
+/* Premium card grids */
+.product-solutions__grid,
+.industry-solutions__grid,
+.why-vr__grid,
+.stay-cool__grid,
+.testimonials__grid {
+  gap: var(--fluid-card-gap);
+}
+
+.product-solutions__card,
+.industry-solutions__card,
+.why-vr__item,
+.stay-cool__item,
+.testimonials__card,
+.cooling-plan__panel,
+.showroom__cta,
+.contact-visit__card,
+.final-cta__card,
+.service-area__panel,
+.trusted-clients__logo,
+.hero__trust-strip {
+  border-radius: var(--fluid-card-radius);
+}
+
+/* Hover lift only for fine pointers — avoids sticky mobile hover */
+@media (hover: hover) and (pointer: fine) {
+  .product-solutions__card:hover,
+  .industry-solutions__card:hover,
+  .why-vr__item:hover,
+  .stay-cool__item:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .product-solutions__card:hover,
+  .industry-solutions__card:hover,
+  .why-vr__item:hover,
+  .stay-cool__item:hover,
+  .product-solutions__card:hover .product-solutions__card-image,
+  .industry-solutions__card:hover .industry-solutions__card-image {
+    transform: none;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  }
+}
+
+/* Touch-friendly controls */
+@media (max-width: 63.99rem) {
+  .header__cta,
+  .hero__button,
+  .showroom__cta,
+  .final-cta__button,
+  .contact-visit__button,
+  .testimonials__cta,
+  .cooling-plan__cta-button,
+  .product-solutions__card-link,
+  .industry-solutions__card-link {
+    min-height: var(--touch-min);
+  }
+}
+
+/* Mid tablet: keep 2-col cards with premium breathing room */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .product-solutions__grid,
+  .industry-solutions__grid,
+  .why-vr__grid,
+  .stay-cool__grid {
+    gap: 1.25rem;
+  }
+
+  .product-solutions__card,
+  .industry-solutions__card,
+  .why-vr__item,
+  .stay-cool__item {
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  }
+}
+
+/* Large phones / small tablets: elegant header number watermark */
+@media (max-width: 47.99rem) {
+  .product-solutions__header,
+  .industry-solutions__header,
+  .why-vr__header,
+  .cooling-plan__header,
+  .showroom__header,
+  .stay-cool__header,
+  .testimonials__header,
+  .trusted-clients__header {
+    position: relative;
+    padding-top: 0.35rem;
+  }
+
+  .product-solutions__number,
+  .industry-solutions__number,
+  .why-vr__number,
+  .cooling-plan__number,
+  .showroom__number,
+  .stay-cool__number,
+  .testimonials__number,
+  .trusted-clients__number {
+    position: absolute;
+    top: -0.15rem;
+    right: 0;
+    z-index: 0;
+    font-size: clamp(3.75rem, 22vw, 5.5rem);
+    opacity: 0.22;
+    pointer-events: none;
+    line-height: 0.8;
+  }
+
+  .product-solutions__intro,
+  .industry-solutions__intro,
+  .why-vr__intro,
+  .cooling-plan__intro,
+  .showroom__intro,
+  .stay-cool__intro,
+  .testimonials__intro,
+  .trusted-clients__intro {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+}

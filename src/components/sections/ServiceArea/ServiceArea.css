@@ -234,7 +234,13 @@
 
 @media (max-width: 560px) {
   .service-area__heading {
-    gap: 35px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .service-area__number {
+    font-size: 64px;
   }
 
   .service-area__title {
@@ -246,7 +252,12 @@
     margin-bottom: 22px;
   }
 
+  .service-area__chips {
+    flex-wrap: wrap;
+  }
+
   .service-area__chip {
+    flex: 1 1 auto;
     padding: 10px 14px;
     font-size: 13px;
   }

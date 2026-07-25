@@ -1,7 +1,7 @@
 .whatsapp-fab {
   position: fixed;
-  left: 28px;
-  bottom: 28px;
+  left: max(1rem, env(safe-area-inset-left, 0px));
+  bottom: max(1rem, calc(1rem + env(safe-area-inset-bottom, 0px)));
   z-index: 45;
 
   display: grid;
@@ -61,8 +61,8 @@
 
 @media (max-width: 720px) {
   .whatsapp-fab {
-    left: 16px;
-    bottom: 16px;
+    left: max(0.85rem, env(safe-area-inset-left, 0px));
+    bottom: max(0.85rem, calc(0.85rem + env(safe-area-inset-bottom, 0px)));
 
     width: 48px;
     height: 48px;
@@ -71,5 +71,12 @@
   .whatsapp-fab svg {
     width: 24px;
     height: 24px;
+  }
+}
+
+@media (min-width: 45.01rem) {
+  .whatsapp-fab {
+    left: 28px;
+    bottom: max(28px, calc(28px + env(safe-area-inset-bottom, 0px)));
   }
 }
