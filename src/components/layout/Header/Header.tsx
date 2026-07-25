@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useId, useState, type ReactElement } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactElement,
+} from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
@@ -10,6 +16,9 @@ import { navigation, type NavIcon } from "@/data/navigation";
 import { cx } from "@/lib/cx";
 
 import "./Header.css";
+
+const DRAWER_MS = 340;
+const DRAWER_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 const SnowflakeIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -96,11 +105,16 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const menuId = useId();
+  const drawerRef = useRef<HTMLElement>(null);
+  const backdropRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // iOS WebKit: body style locks cancel fixed-layer animations.
+  // Block background scroll with touchmove instead.
   useEffect(() => {
     if (!menuOpen) return;
 
@@ -108,15 +122,82 @@ const Header = () => {
       if (event.key === "Escape") setMenuOpen(false);
     };
 
+    const onTouchMove = (event: TouchEvent) => {
+      const target = event.target as Element | null;
+      if (target?.closest(".header__drawer")) return;
+      event.preventDefault();
+    };
+
     document.addEventListener("keydown", onKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("touchmove", onTouchMove);
     };
   }, [menuOpen]);
+
+  // Web Animations API — works across iOS browsers (all WebKit)
+  useEffect(() => {
+    if (!mounted) return;
+
+    const drawer = drawerRef.current;
+    const backdrop = backdropRef.current;
+    if (!drawer || !backdrop) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const duration = reduceMotion ? 1 : DRAWER_MS;
+
+    drawer.getAnimations().forEach((animation) => animation.cancel());
+    backdrop.getAnimations().forEach((animation) => animation.cancel());
+
+    if (menuOpen) {
+      wasOpenRef.current = true;
+
+      drawer.animate(
+        [
+          { transform: "translate3d(100%, 0, 0)" },
+          { transform: "translate3d(0, 0, 0)" },
+        ],
+        { duration, easing: DRAWER_EASE, fill: "forwards" },
+      );
+      backdrop.animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        {
+          duration: Math.round(duration * 0.85),
+          easing: "ease",
+          fill: "forwards",
+        },
+      );
+      return;
+    }
+
+    if (!wasOpenRef.current) {
+      drawer.style.transform = "translate3d(100%, 0, 0)";
+      backdrop.style.opacity = "0";
+      return;
+    }
+
+    wasOpenRef.current = false;
+
+    drawer.animate(
+      [
+        { transform: "translate3d(0, 0, 0)" },
+        { transform: "translate3d(100%, 0, 0)" },
+      ],
+      { duration, easing: DRAWER_EASE, fill: "forwards" },
+    );
+    backdrop.animate(
+      [{ opacity: 1 }, { opacity: 0 }],
+      {
+        duration: Math.round(duration * 0.85),
+        easing: "ease",
+        fill: "forwards",
+      },
+    );
+  }, [menuOpen, mounted]);
 
   const goTo = (targetId: string) => {
     setMenuOpen(false);
@@ -152,7 +233,18 @@ const Header = () => {
     mounted &&
     createPortal(
       <>
+        <button
+          ref={backdropRef}
+          type="button"
+          className="header__backdrop"
+          aria-label="Close menu"
+          data-open={menuOpen ? "true" : "false"}
+          tabIndex={menuOpen ? 0 : -1}
+          onClick={() => setMenuOpen(false)}
+        />
+
         <nav
+          ref={drawerRef}
           id={menuId}
           className="header__drawer"
           aria-label="Mobile primary"
@@ -169,15 +261,6 @@ const Header = () => {
             </button>
           </div>
         </nav>
-
-        {menuOpen ? (
-          <button
-            type="button"
-            className="header__backdrop"
-            aria-label="Close menu"
-            onClick={() => setMenuOpen(false)}
-          />
-        ) : null}
       </>,
       document.body,
     );

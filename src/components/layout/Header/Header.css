@@ -1,7 +1,7 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 100;
 
   width: 100%;
   min-height: calc(72px + var(--safe-top));
@@ -267,6 +267,14 @@
 
   background: rgba(2, 11, 22, 0.55);
   cursor: pointer;
+
+  opacity: 0;
+  pointer-events: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.header__backdrop[data-open="true"] {
+  pointer-events: auto;
 }
 
 /* Mobile / tablet drawer — portaled to body (< 1024px) */
@@ -282,7 +290,9 @@
 
   width: min(100%, 22.5rem);
   height: calc(100dvh - 72px - var(--safe-top, 0px));
+  height: calc(100svh - 72px - var(--safe-top, 0px));
   max-height: calc(100dvh - 72px - var(--safe-top, 0px));
+  max-height: calc(100svh - 72px - var(--safe-top, 0px));
   margin: 0;
   padding: 1.5rem 1.25rem calc(1.25rem + var(--safe-bottom, 0px));
   box-sizing: border-box;
@@ -292,17 +302,14 @@
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: -24px 0 48px rgba(0, 0, 0, 0.35);
 
-  transform: translateX(110%);
-  visibility: hidden;
+  /* Animation driven by Web Animations API in Header.tsx (iOS-safe) */
+  transform: translate3d(100%, 0, 0);
   pointer-events: none;
-  transition:
-    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0.32s ease;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .header__drawer[data-open="true"] {
-  transform: translateX(0);
-  visibility: visible;
   pointer-events: auto;
 }
 
@@ -380,16 +387,15 @@
   .header__drawer {
     top: calc(88px + var(--safe-top, 0px));
     height: calc(100dvh - 88px - var(--safe-top, 0px));
+    height: calc(100svh - 88px - var(--safe-top, 0px));
     max-height: calc(100dvh - 88px - var(--safe-top, 0px));
+    max-height: calc(100svh - 88px - var(--safe-top, 0px));
   }
 }
 
-/* Short landscape / short viewports — tighter spacing so CTA stays reachable */
+/* Short landscape — tighter spacing only; keep drawer below real header height */
 @media (max-height: 32rem) {
   .header__drawer {
-    top: calc(64px + var(--safe-top, 0px));
-    height: calc(100dvh - 64px - var(--safe-top, 0px));
-    max-height: calc(100dvh - 64px - var(--safe-top, 0px));
     gap: 0.65rem;
     padding: 0.75rem 1rem calc(0.75rem + var(--safe-bottom, 0px));
   }
@@ -444,7 +450,7 @@
 
 @media (min-width: 48rem) {
   .header {
-    min-height: 88px;
+    min-height: calc(88px + var(--safe-top));
   }
 
   .header__inner {

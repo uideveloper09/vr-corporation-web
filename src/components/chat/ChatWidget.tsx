@@ -451,71 +451,72 @@ const ChatWidget = () => {
             </div>
           ) : null}
 
-          <div className="chat-widget__messages" ref={listRef}>
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={
-                  message.role === "user"
-                    ? "chat-widget__bubble chat-widget__bubble--user"
-                    : "chat-widget__bubble chat-widget__bubble--assistant"
-                }
-              >
-                {message.role === "assistant" ? (
-                  <span className="chat-widget__bubble-label">Aria</span>
-                ) : null}
-                <MessageText content={message.content} />
-              </div>
-            ))}
+          <div className="chat-widget__body" ref={listRef}>
+            <div className="chat-widget__messages">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={
+                    message.role === "user"
+                      ? "chat-widget__bubble chat-widget__bubble--user"
+                      : "chat-widget__bubble chat-widget__bubble--assistant"
+                  }
+                >
+                  {message.role === "assistant" ? (
+                    <span className="chat-widget__bubble-label">Aria</span>
+                  ) : null}
+                  <MessageText content={message.content} />
+                </div>
+              ))}
 
-            {typing ? (
-              <div className="chat-widget__bubble chat-widget__bubble--assistant chat-widget__bubble--typing">
-                <span className="chat-widget__bubble-label">Aria</span>
-                <span className="chat-widget__typing" aria-label="Aria is typing">
-                  <span />
-                  <span />
-                  <span />
-                </span>
+              {typing ? (
+                <div className="chat-widget__bubble chat-widget__bubble--assistant chat-widget__bubble--typing">
+                  <span className="chat-widget__bubble-label">Aria</span>
+                  <span className="chat-widget__typing" aria-label="Aria is typing">
+                    <span />
+                    <span />
+                    <span />
+                  </span>
+                </div>
+              ) : null}
+            </div>
+
+            {suggestions.length > 0 && !typing ? (
+              <div className="chat-widget__suggestions" aria-label="Suggestions">
+                {suggestions.map((item) => {
+                  const isWhatsApp = /whats\s*app/i.test(item);
+
+                  if (isWhatsApp) {
+                    return (
+                      <a
+                        key={item}
+                        className="chat-widget__chip chat-widget__chip--whatsapp"
+                        href={contactVisitData.whatsapp.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                          void send(item);
+                        }}
+                      >
+                        {item}
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <button
+                      key={item}
+                      type="button"
+                      className="chat-widget__chip"
+                      onClick={() => void send(item)}
+                    >
+                      {item}
+                    </button>
+                  );
+                })}
               </div>
             ) : null}
           </div>
-
-          {suggestions.length > 0 && !typing ? (
-            <div className="chat-widget__suggestions" aria-label="Suggestions">
-              {suggestions.map((item) => {
-                const isWhatsApp = /whats\s*app/i.test(item);
-
-                if (isWhatsApp) {
-                  return (
-                    <a
-                      key={item}
-                      className="chat-widget__chip chat-widget__chip--whatsapp"
-                      href={contactVisitData.whatsapp.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => {
-                        // Keep chat context, but WhatsApp open is the primary action
-                        void send(item);
-                      }}
-                    >
-                      {item}
-                    </a>
-                  );
-                }
-
-                return (
-                  <button
-                    key={item}
-                    type="button"
-                    className="chat-widget__chip"
-                    onClick={() => void send(item)}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
-            </div>
-          ) : null}
 
           <form className="chat-widget__composer" onSubmit={onSubmit}>
             <input

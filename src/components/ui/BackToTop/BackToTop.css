@@ -1,27 +1,37 @@
 .back-to-top {
+  /* Keep in sync with .chat-widget / .chat-widget__launcher */
+  --fab-size: 52px;
+  --fab-right: 28px;
+  --fab-bottom: 28px;
+  --fab-gap: 12px;
+
   position: fixed;
-  /* Chat 52px @ right 28px → center at 54px; thumbler 44px → right 32px */
-  right: max(32px, env(safe-area-inset-right, 0px));
-  bottom: max(94px, calc(94px + env(safe-area-inset-bottom, 0px)));
+  right: max(var(--fab-right), env(safe-area-inset-right, 0px));
+  bottom: max(
+    calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap)),
+    calc(
+      var(--fab-bottom) + var(--fab-size) + var(--fab-gap) +
+        env(safe-area-inset-bottom, 0px)
+    )
+  );
   z-index: 40;
 
   display: grid;
   place-items: center;
 
-  width: 44px;
-  height: 44px;
+  width: var(--fab-size);
+  height: var(--fab-size);
   padding: 0;
 
-  border: 1px solid rgba(94, 180, 255, 0.45);
+  border: 1px solid rgba(120, 190, 255, 0.5);
   border-radius: 50%;
 
-  background:
-    linear-gradient(160deg, rgba(30, 120, 255, 0.95) 0%, rgba(8, 70, 200, 0.98) 100%);
+  background: linear-gradient(160deg, #1e90ff 0%, #0a55e8 55%, #0746c4 100%);
   color: #ffffff;
   box-shadow:
-    0 10px 28px rgba(8, 40, 120, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-    0 0 24px rgba(47, 139, 255, 0.35);
+    0 12px 30px rgba(8, 40, 120, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 0 28px rgba(47, 139, 255, 0.4);
 
   cursor: pointer;
 
@@ -35,7 +45,8 @@
     transform 0.28s ease,
     visibility 0.28s ease,
     box-shadow 0.28s ease,
-    border-color 0.28s ease;
+    border-color 0.28s ease,
+    filter 0.22s ease;
 }
 
 .back-to-top--visible {
@@ -47,6 +58,7 @@
 
 .back-to-top:hover {
   border-color: rgba(158, 210, 255, 0.75);
+  filter: brightness(1.06);
   box-shadow:
     0 14px 34px rgba(8, 40, 120, 0.42),
     0 0 0 1px rgba(255, 255, 255, 0.12) inset,
@@ -55,7 +67,7 @@
 }
 
 .back-to-top:focus-visible {
-  outline: 2px solid #00a8ff;
+  outline: 2px solid #7ec8ff;
   outline-offset: 3px;
 }
 
@@ -68,8 +80,8 @@
 
   background: radial-gradient(
     circle at 30% 25%,
-    rgba(160, 210, 255, 0.35),
-    transparent 55%
+    rgba(180, 220, 255, 0.4),
+    transparent 58%
   );
 
   pointer-events: none;
@@ -77,10 +89,10 @@
 
 .back-to-top__ring {
   position: absolute;
-  inset: 5px;
+  inset: 6px;
   z-index: 0;
 
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
 
   pointer-events: none;
@@ -90,22 +102,28 @@
   position: relative;
   z-index: 1;
 
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 47.99rem) {
   .back-to-top {
-    /* Chat 48px @ right 16px → center at 40px; thumbler 40px → right 20px */
-    right: max(20px, env(safe-area-inset-right, 0px));
-    bottom: max(78px, calc(78px + env(safe-area-inset-bottom, 0px)));
-
-    width: 40px;
-    height: 40px;
+    --fab-right: 12px;
+    --fab-bottom: 12px;
   }
+}
 
-  .back-to-top__icon {
-    width: 16px;
-    height: 16px;
+@media (max-height: 32rem) {
+  .back-to-top {
+    --fab-right: 10px;
+    --fab-bottom: 10px;
+    --fab-gap: 10px;
+  }
+}
+
+@media (min-width: 80rem) {
+  .back-to-top {
+    --fab-right: 32px;
+    --fab-bottom: 32px;
   }
 }
