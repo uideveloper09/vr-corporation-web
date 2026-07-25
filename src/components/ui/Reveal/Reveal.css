@@ -39,6 +39,18 @@
   transform: none;
 }
 
+/* Keep hero trust-strip above the next section's -42px overlap */
+.reveal--hero {
+  position: relative;
+  z-index: 2;
+  overflow: visible;
+}
+
+.reveal--after-hero {
+  position: relative;
+  z-index: 1;
+}
+
 /* Stagger children when parent is revealed */
 .reveal--stagger.reveal--in > * {
   animation: reveal-child-in 0.7s var(--reveal-ease) both;

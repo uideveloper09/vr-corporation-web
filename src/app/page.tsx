@@ -60,11 +60,11 @@ export default function HomePage() {
       <Header />
 
       <main>
-        <Reveal variant="fade" eager delay={160}>
+        <Reveal variant="fade" eager delay={160} className="reveal--hero">
           <Hero />
         </Reveal>
 
-        <Reveal variant="up" delay={40}>
+        <Reveal variant="up" delay={40} className="reveal--after-hero">
           <ProductSolutions />
         </Reveal>
 
