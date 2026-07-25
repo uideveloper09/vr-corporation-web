@@ -1,25 +1,61 @@
+import type { Metadata } from "next";
+
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/ui/BackToTop";
 import WhatsAppFab from "@/components/ui/WhatsAppFab";
 import ChatWidget from "@/components/chat";
-import Hero from "@/sections/Hero";
-import ProductSolutions from "@/sections/ProductSolutions";
-import IndustrySolutions from "@/sections/IndustrySolutions";
-import WhyVr from "@/sections/WhyVr";
-import CoolingPlan from "@/sections/CoolingPlan";
-import Showroom from "@/sections/Showroom";
-import StayCool from "@/sections/StayCool";
-import Testimonials from "@/sections/Testimonials";
-import TrustedClients from "@/sections/TrustedClients";
-import ServiceArea from "@/sections/ServiceArea";
-import Faq from "@/sections/Faq";
-import FinalCta from "@/sections/FinalCta";
-import ContactVisit from "@/sections/ContactVisit";
+import JsonLd from "@/components/seo/JsonLd";
+import {
+  Hero,
+  ProductSolutions,
+  IndustrySolutions,
+  WhyVr,
+  CoolingPlan,
+  Showroom,
+  StayCool,
+  Testimonials,
+  TrustedClients,
+  ServiceArea,
+  Faq,
+  FinalCta,
+  ContactVisit,
+} from "@/components/sections";
+import { homeSeo, siteConfig } from "@/data/site";
+import { buildHomeJsonLdGraph } from "@/lib/seo/schema";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: homeSeo.title,
+  },
+  description: homeSeo.description,
+  keywords: [...homeSeo.keywords],
+  openGraph: {
+    title: homeSeo.title,
+    description: homeSeo.description,
+    url: siteConfig.urlReady ? siteConfig.url : undefined,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        alt: `${siteConfig.name} showroom cooling solutions in Kharkhoda`,
+      },
+    ],
+  },
+  twitter: {
+    title: homeSeo.title,
+    description: homeSeo.description,
+    images: [siteConfig.ogImage],
+  },
+  alternates: siteConfig.urlReady
+    ? { canonical: siteConfig.url }
+    : undefined,
+};
 
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={buildHomeJsonLdGraph()} />
+
       <Header />
 
       <main>

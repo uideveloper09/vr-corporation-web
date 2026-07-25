@@ -1,0 +1,13 @@
+export { default as Hero } from "./Hero";
+export { default as ProductSolutions } from "./ProductSolutions";
+export { default as IndustrySolutions } from "./IndustrySolutions";
+export { default as WhyVr } from "./WhyVr";
+export { default as CoolingPlan } from "./CoolingPlan";
+export { default as Showroom } from "./Showroom";
+export { default as StayCool } from "./StayCool";
+export { default as Testimonials } from "./Testimonials";
+export { default as TrustedClients } from "./TrustedClients";
+export { default as ServiceArea } from "./ServiceArea";
+export { default as Faq } from "./Faq";
+export { default as FinalCta } from "./FinalCta";
+export { default as ContactVisit } from "./ContactVisit";

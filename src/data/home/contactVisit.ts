@@ -1,10 +1,13 @@
+import { siteConfig } from "@/data/site";
+
 const DEFAULT_WHATSAPP_MESSAGE =
   "Hi V R Corporation, I’m interested in Daikin AC / cooling solutions. Please assist me with the right plan.";
 
-const phoneHref = "tel:+910000000000";
+const phoneHref = `tel:${siteConfig.phone.e164}`;
 const phoneDigits = phoneHref.replace(/^tel:\+?/, "").replace(/\D/g, "");
 /** Placeholder numbers like +910000000000 stay inactive until a real line is set */
 const phoneReady =
+  siteConfig.phone.ready &&
   phoneDigits.length >= 10 &&
   !phoneDigits.includes("0000000000") &&
   !/^0+$/.test(phoneDigits);
@@ -27,8 +30,8 @@ export const contactVisitData = {
     name: "V R CORPORATION",
     partner: "DAIKIN AUTHORIZED PARTNER",
   },
-  address: "Ward No. 9, Near Shri Ram Real Estate, Kharkhoda, Sonipat, Haryana – 131402",
-  hours: "Open 10:00 AM – 7:00 PM",
+  address: siteConfig.address.formatted,
+  hours: `Open ${siteConfig.hours.display}`,
   primaryCta: {
     label: "Call the Cooling Desk",
     href: phoneHref,
@@ -46,7 +49,7 @@ export const contactVisitData = {
   },
   coordinates: {
     label: "Kharkhoda Coordinates",
-    value: "28.8674698, 76.9061127",
-    mapsHref: "https://maps.google.com/?q=28.8674698,76.9061127",
+    value: `${siteConfig.geo.latitude}, ${siteConfig.geo.longitude}`,
+    mapsHref: siteConfig.hasMap,
   },
 };

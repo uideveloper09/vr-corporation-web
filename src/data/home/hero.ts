@@ -12,6 +12,13 @@ export const heroData = {
 
   trustText: "No guesswork. Just the right cooling plan.",
 
+  image: {
+    src: "/images/hero/heroDoor-new2.png",
+    alt: "",
+    width: 1148,
+    height: 871,
+  },
+
   trustStrip: [
     {
       id: "know-how",
