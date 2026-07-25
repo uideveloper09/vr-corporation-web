@@ -282,9 +282,11 @@
 
   width: min(100%, 22.5rem);
   height: calc(100dvh - 72px - var(--safe-top, 0px));
+  max-height: calc(100dvh - 72px - var(--safe-top, 0px));
   margin: 0;
-  padding: 1.5rem 1.25rem calc(2rem + var(--safe-bottom, 0px));
+  padding: 1.5rem 1.25rem calc(1.25rem + var(--safe-bottom, 0px));
   box-sizing: border-box;
+  overflow: hidden;
 
   background: linear-gradient(180deg, #06182c 0%, #03101f 100%);
   border-left: 1px solid rgba(255, 255, 255, 0.08);
@@ -305,9 +307,18 @@
 }
 
 .header__drawer .header__list {
+  flex: 1 1 auto;
+  flex-shrink: 1;
   flex-direction: column;
   align-items: stretch;
   gap: 0.25rem;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .header__drawer .header__link {
@@ -355,8 +366,9 @@
 
 .header__mobile-cta {
   display: block;
+  flex-shrink: 0;
   margin-top: auto;
-  padding-top: 1rem;
+  padding-top: 0.75rem;
 }
 
 .header__mobile-cta .header__cta {
@@ -368,6 +380,32 @@
   .header__drawer {
     top: calc(88px + var(--safe-top, 0px));
     height: calc(100dvh - 88px - var(--safe-top, 0px));
+    max-height: calc(100dvh - 88px - var(--safe-top, 0px));
+  }
+}
+
+/* Short landscape / short viewports — tighter spacing so CTA stays reachable */
+@media (max-height: 32rem) {
+  .header__drawer {
+    top: calc(64px + var(--safe-top, 0px));
+    height: calc(100dvh - 64px - var(--safe-top, 0px));
+    max-height: calc(100dvh - 64px - var(--safe-top, 0px));
+    gap: 0.65rem;
+    padding: 0.75rem 1rem calc(0.75rem + var(--safe-bottom, 0px));
+  }
+
+  .header__drawer .header__link {
+    min-height: 2.5rem;
+    padding: 0.55rem 0.65rem;
+  }
+
+  .header__link-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .header__mobile-cta {
+    padding-top: 0.35rem;
   }
 }
 

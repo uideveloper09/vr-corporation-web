@@ -402,17 +402,7 @@
   }
 
   .hero__media {
-    order: 2;
-    justify-content: center;
-    padding-right: 0;
-    min-height: clamp(220px, 38vw, 360px);
-  }
-
-  .hero__visual {
-    max-width: min(100%, 32rem);
-    max-height: none;
-    filter: drop-shadow(0 24px 48px rgba(0, 120, 255, 0.18));
-    transform: translateX(0) translateY(0) scale(1);
+    display: none;
   }
 
   .hero__trust-strip {
@@ -524,10 +514,6 @@
   .hero__trust {
     margin-top: 1rem;
     font-size: 0.75rem;
-  }
-
-  .hero__media {
-    display: none;
   }
 
   .hero__trust-strip {
