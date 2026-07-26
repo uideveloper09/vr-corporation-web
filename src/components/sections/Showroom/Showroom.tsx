@@ -61,6 +61,7 @@ const Showroom = ({
                 width={1174}
                 height={738}
                 sizes="(max-width: 63.99rem) 100vw, 60vw"
+                style={{ width: "100%", height: "auto" }}
                 unoptimized
                 priority={false}
               />

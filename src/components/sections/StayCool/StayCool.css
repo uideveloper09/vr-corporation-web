@@ -294,13 +294,13 @@
 
 @media (max-width: 47.99rem) {
   .stay-cool {
-    padding-block: 1.25rem 2rem;
+    padding-block: 1rem 1.75rem;
   }
 
   .stay-cool__header {
     flex-direction: column;
     gap: 8px;
-    padding-block: 0 4px;
+    padding-block: 0;
   }
 
   .stay-cool__number {
@@ -309,16 +309,12 @@
   }
 
   .stay-cool__inner {
-    gap: 1.15rem;
+    gap: 1rem;
   }
 
-  .stay-cool::before {
-    height: 45%;
-  }
-
+  .stay-cool::before,
   .stay-cool::after {
-    height: 140px;
-    opacity: 0.7;
+    display: none;
   }
 }
 

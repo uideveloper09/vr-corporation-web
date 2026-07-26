@@ -198,16 +198,16 @@ html {
 /* Phones: keep showroom → stay-cool tight (wave decor must not read as empty section) */
 @media (max-width: 47.99rem) {
   .showroom {
-    padding-block: 1.5rem 0.75rem;
+    padding-block: 1.25rem 0.35rem;
   }
 
   .stay-cool {
-    padding-block: 1.25rem 2rem;
+    padding-block: 1rem 1.75rem;
   }
 
   .showroom__inner,
   .stay-cool__inner {
-    gap: 1rem;
+    gap: 0.85rem;
   }
 }
 
