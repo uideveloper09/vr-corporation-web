@@ -264,6 +264,7 @@ const Header = () => {
           </div>
         </Container>
       </header>
+      <div className="header-spacer" aria-hidden="true" />
 
       {drawer}
     </>
