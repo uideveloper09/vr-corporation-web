@@ -58,10 +58,9 @@
 .service-area__panel {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
-  align-items: center;
+  align-items: stretch;
   column-gap: 28px;
 
-  min-height: 420px;
   padding: 20px 36px 20px 16px;
 
   border-radius: 40px;
@@ -75,20 +74,23 @@
   overflow: hidden;
 
   width: 100%;
-  aspect-ratio: 691 / 602;
+  height: 100%;
+  min-height: 0;
 
   border-radius: 24px;
 
   background: #f4f7fb;
+  box-shadow: inset 0 0 0 1px rgba(29, 103, 205, 0.08);
 }
 
-.service-area__map-image {
-  display: block;
+.service-area__map-frame {
+  position: absolute;
+  inset: 0;
+
   width: 100%;
   height: 100%;
-
-  object-fit: cover;
-  object-position: center;
+  border: 0;
+  border-radius: 24px;
 }
 
 .service-area__content {
@@ -219,6 +221,12 @@
     grid-template-columns: 1fr;
     row-gap: 8px;
     padding: 16px 16px 28px;
+  }
+
+  .service-area__map {
+    height: auto;
+    min-height: 280px;
+    aspect-ratio: 16 / 11;
   }
 
   .service-area__content {

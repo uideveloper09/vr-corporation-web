@@ -8,32 +8,42 @@ export const trustedClientsData = {
     {
       id: "suzuki",
       name: "Suzuki Motorcycles Kharkhoda",
-      logo: "/images/sections/trusted-clients/suzuki.png",
+      logo: "/images/brand/08/Suzuki.jpeg",
     },
     {
-      id: "bellsonica",
-      name: "Bellsonica",
-      logo: "/images/sections/trusted-clients/bellsonica.png",
+      id: "bellsonic",
+      name: "Bellsonic",
+      logo: "/images/brand/08/BPL.jpeg",
+    },
+    {
+      id: "bsl",
+      name: "BSL",
+      logo: "/images/brand/08/BSL.png",
     },
     {
       id: "kml",
       name: "KML Seat",
-      logo: "/images/sections/trusted-clients/kml.png",
+      logo: "/images/brand/08/KML.jpg",
     },
     {
-      id: "polyplastic",
-      name: "Polyplastic India",
-      logo: "/images/sections/trusted-clients/polyplastic.png",
+      id: "polyplastics",
+      name: "Polyplastics Industries",
+      logo: "/images/brand/08/Polyplastics.jpeg",
     },
     {
       id: "takenaka",
       name: "Takenaka India Pvt Ltd",
-      logo: "/images/sections/trusted-clients/takenaka.png",
+      logo: "/images/brand/08/Takenaka.png",
     },
     {
       id: "meneta",
       name: "Meneta",
-      logo: "/images/sections/trusted-clients/meneta.png",
+      logo: "/images/brand/08/Meneta.png",
+    },
+    {
+      id: "sagar-graphics",
+      name: "Sagar Graphics",
+      logo: "/images/brand/08/images.jpeg",
     },
   ],
 };

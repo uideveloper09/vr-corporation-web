@@ -1,10 +1,9 @@
-import Image from "next/image";
-
 import Container from "@/components/ui/Container";
 import { serviceAreaData } from "@/data/home/serviceArea";
 import { cx } from "@/lib/cx";
 
 import "./ServiceArea.css";
+import ServiceAreaMap from "./ServiceAreaMap";
 
 export type ServiceAreaData = typeof serviceAreaData;
 
@@ -40,14 +39,9 @@ const ServiceArea = ({
       <Container>
         <div className="service-area__panel">
           <div className="service-area__map">
-            <Image
-              className="service-area__map-image"
-              src={map.src}
-              alt={map.alt}
-              width={map.width}
-              height={map.height}
-              sizes="(max-width: 860px) 100vw, 55vw"
-              priority={false}
+            <ServiceAreaMap
+              className="service-area__map-frame"
+              title={map.alt}
             />
           </div>
 
