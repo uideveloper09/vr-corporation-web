@@ -11,7 +11,7 @@ const BrandLogo = ({ className = "", href }: BrandLogoProps) => {
   const content = (
     <Image
       className="brand-logo__image"
-      src="/images/logos/logo-vrcorporation.png"
+      src="/images/logos/logo-vrcorporation-light.png"
       alt="V R Corporation — Daikin Authorized Partner"
       width={320}
       height={72}

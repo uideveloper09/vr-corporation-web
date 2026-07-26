@@ -12,7 +12,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  overflow-x: hidden;
+  /* clip avoids the overflow-x:hidden → overflow-y:auto scroll-container bug (double scrollbar) */
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -23,7 +24,7 @@ html:focus-within {
 body {
   min-height: 100vh;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   line-height: 1.5;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -98,7 +99,7 @@ a {
 
   /* Decorative reveals only — do not kill drawer/carousel/UI motion */
   .reveal:not(.reveal--in),
-  .reveal--stagger.reveal--in > * {
+  .reveal--stagger.reveal--in>* {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
