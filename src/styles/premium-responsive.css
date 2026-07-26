@@ -237,6 +237,8 @@ html {
     top: -0.15rem;
     right: 0;
     z-index: 0;
+    max-width: 45%;
+    overflow: hidden;
     font-size: clamp(3.75rem, 22vw, 5.5rem);
     opacity: 0.22;
     pointer-events: none;
