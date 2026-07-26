@@ -80,6 +80,15 @@ const createSessionId = (forceNew = false) => {
 const hasUserHistory = (items: ChatMessage[]) =>
   items.some((item) => item.role === "user");
 
+const createChatMessage = (
+  role: ChatMessage["role"],
+  content: string,
+): ChatMessage => ({
+  id: createId(),
+  role,
+  content,
+  createdAt: Date.now(),
+});
 
 const URL_PATTERN = /(https?:\/\/[^\s]+)/g;
 
@@ -180,6 +189,7 @@ const ChatWidget = () => {
   const [confirmReset, setConfirmReset] = useState(false);
   const [showResumeBanner, setShowResumeBanner] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [undoAvailable, setUndoAvailable] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>(
     chatWelcome.suggestions,
   );
@@ -193,14 +203,17 @@ const ChatWidget = () => {
   const chatHasHistory = hasUserHistory(messages);
 
   useEffect(() => {
-    const stored = readStoredChat();
-    sessionIdRef.current = createSessionId();
-    if (stored && hasUserHistory(stored.messages)) {
-      setMessages(stored.messages);
-      setSuggestions(stored.suggestions);
-      setShowResumeBanner(true);
-    }
-    hydratedRef.current = true;
+    const frame = window.requestAnimationFrame(() => {
+      const stored = readStoredChat();
+      sessionIdRef.current = createSessionId();
+      if (stored && hasUserHistory(stored.messages)) {
+        setMessages(stored.messages);
+        setSuggestions(stored.suggestions);
+        setShowResumeBanner(true);
+      }
+      hydratedRef.current = true;
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -221,15 +234,12 @@ const ChatWidget = () => {
 
   useEffect(() => {
     if (!toast) return;
-    const timer = window.setTimeout(() => setToast(null), 4200);
+    const timer = window.setTimeout(() => {
+      setToast(null);
+      setUndoAvailable(false);
+    }, 4200);
     return () => window.clearTimeout(timer);
   }, [toast]);
-
-  useEffect(() => {
-    if (!open) {
-      setConfirmReset(false);
-    }
-  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -243,6 +253,19 @@ const ChatWidget = () => {
     const timer = window.setTimeout(() => inputRef.current?.focus(), 180);
     return () => window.clearTimeout(timer);
   }, [open]);
+
+  const closeChat = () => {
+    setOpen(false);
+    setConfirmReset(false);
+  };
+
+  const toggleChat = () => {
+    if (open) {
+      closeChat();
+      return;
+    }
+    setOpen(true);
+  };
 
   const applyFreshChat = () => {
     setMessages(createWelcomeMessages());
@@ -263,6 +286,7 @@ const ChatWidget = () => {
   const confirmResetChat = () => {
     undoSnapshotRef.current = { messages, suggestions };
     applyFreshChat();
+    setUndoAvailable(true);
     setToast("Chat cleared");
   };
 
@@ -273,6 +297,7 @@ const ChatWidget = () => {
     setSuggestions(snapshot.suggestions);
     setShowResumeBanner(false);
     setToast(null);
+    setUndoAvailable(false);
     undoSnapshotRef.current = null;
   };
 
@@ -280,12 +305,7 @@ const ChatWidget = () => {
     const text = raw.trim();
     if (!text || typing) return;
 
-    const userMessage: ChatMessage = {
-      id: createId(),
-      role: "user",
-      content: text,
-      createdAt: Date.now(),
-    };
+    const userMessage = createChatMessage("user", text);
 
     startTransition(() => {
       setMessages((current) => [...current, userMessage]);
@@ -304,25 +324,17 @@ const ChatWidget = () => {
         sessionId: sessionIdRef.current,
       });
 
-      const assistantMessage: ChatMessage = {
-        id: createId(),
-        role: "assistant",
-        content: result.reply,
-        createdAt: Date.now(),
-      };
+      const assistantMessage = createChatMessage("assistant", result.reply);
 
       setMessages((current) => [...current, assistantMessage]);
       setSuggestions(result.suggestions ?? []);
     } catch {
       setMessages((current) => [
         ...current,
-        {
-          id: createId(),
-          role: "assistant",
-          content:
-            "I’m having a brief connection hiccup on my side. You can retry in a moment, or reach the Cooling Desk from Visit Us / Call options on the site.",
-          createdAt: Date.now(),
-        },
+        createChatMessage(
+          "assistant",
+          "I’m having a brief connection hiccup on my side. You can retry in a moment, or reach the Cooling Desk from Visit Us / Call options on the site.",
+        ),
       ]);
       setSuggestions([
         "Showroom timings",
@@ -376,7 +388,7 @@ const ChatWidget = () => {
               <button
                 type="button"
                 className="chat-widget__close"
-                onClick={() => setOpen(false)}
+                onClick={closeChat}
                 aria-label="Close chat"
               >
                 <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
@@ -439,7 +451,7 @@ const ChatWidget = () => {
           {toast ? (
             <div className="chat-widget__toast" role="status">
               <span>{toast}</span>
-              {undoSnapshotRef.current ? (
+              {undoAvailable ? (
                 <button
                   type="button"
                   className="chat-widget__toast-undo"
@@ -550,7 +562,7 @@ const ChatWidget = () => {
       <button
         type="button"
         className="chat-widget__launcher"
-        onClick={() => setOpen((current) => !current)}
+        onClick={toggleChat}
         aria-label={open ? "Close chat" : "Open Cooling Desk chat"}
         aria-expanded={open}
       >
