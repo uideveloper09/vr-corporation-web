@@ -197,6 +197,16 @@
   transform: translateY(-4px);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .why-vr__item {
+    transition: none;
+  }
+
+  .why-vr__item:hover {
+    transform: none;
+  }
+}
+
 .why-vr__icon {
   display: grid;
   place-items: center;

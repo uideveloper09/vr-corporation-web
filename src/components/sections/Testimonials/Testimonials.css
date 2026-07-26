@@ -195,6 +195,16 @@
   transform: translateY(-4px);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .testimonials__card {
+    transition: none;
+  }
+
+  .testimonials__card:hover {
+    transform: none;
+  }
+}
+
 .testimonials__quote-badge {
   display: grid;
   place-items: center;

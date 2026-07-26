@@ -131,13 +131,7 @@ html {
 .why-vr__item,
 .stay-cool__item,
 .testimonials__card,
-.cooling-plan__panel,
-.showroom__cta,
-.contact-visit__card,
-.final-cta__card,
-.service-area__panel,
-.trusted-clients__logo,
-.hero__trust-strip {
+.cooling-plan__panel {
   border-radius: var(--fluid-card-radius);
 }
 
@@ -146,7 +140,8 @@ html {
   .product-solutions__card:hover,
   .industry-solutions__card:hover,
   .why-vr__item:hover,
-  .stay-cool__item:hover {
+  .stay-cool__item:hover,
+  .testimonials__card:hover {
     transform: translateY(-4px);
   }
 }
@@ -156,6 +151,7 @@ html {
   .industry-solutions__card:hover,
   .why-vr__item:hover,
   .stay-cool__item:hover,
+  .testimonials__card:hover,
   .product-solutions__card:hover .product-solutions__card-image,
   .industry-solutions__card:hover .industry-solutions__card-image {
     transform: none;
@@ -190,7 +186,8 @@ html {
   .product-solutions__card,
   .industry-solutions__card,
   .why-vr__item,
-  .stay-cool__item {
+  .stay-cool__item,
+  .testimonials__card {
     box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
   }
 }

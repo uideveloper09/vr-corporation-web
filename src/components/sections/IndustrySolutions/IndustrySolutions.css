@@ -218,16 +218,21 @@
   transform: scale(1);
   transform-origin: center center;
 
-  transition: transform 0.7s ease-in-out;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .industry-solutions__card:hover .industry-solutions__card-image {
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .industry-solutions__card,
   .industry-solutions__card-image {
     transition: none;
+  }
+
+  .industry-solutions__card:hover {
+    transform: none;
   }
 
   .industry-solutions__card:hover .industry-solutions__card-image {
@@ -389,7 +394,7 @@
 
 .industry-solutions__card-link:hover .industry-solutions__card-arrow,
 .industry-solutions__card:hover .industry-solutions__card-arrow {
-  transform: translateX(5px);
+  transform: translateX(4px);
 }
 
 .industry-solutions__card-link:focus-visible {

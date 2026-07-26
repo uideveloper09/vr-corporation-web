@@ -176,6 +176,12 @@
   text-decoration: none;
 }
 
+.footer__column-link:focus-visible {
+  outline: 2px solid #3aa0ff;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
 .footer__column-icon {
   display: grid;
   place-items: center;
@@ -258,6 +264,12 @@
   color: #9ec5ff;
 }
 
+.footer__contact-item:focus-visible {
+  outline: 2px solid #3aa0ff;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 .footer__contact-icon {
   display: grid;
   place-items: center;
@@ -308,6 +320,11 @@
 .footer__social:hover {
   border-color: #6eb6ff;
   background: rgba(58, 160, 255, 0.1);
+}
+
+.footer__social:focus-visible {
+  outline: 2px solid #3aa0ff;
+  outline-offset: 3px;
 }
 
 .footer__bottom {
