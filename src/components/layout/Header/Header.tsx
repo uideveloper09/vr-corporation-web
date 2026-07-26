@@ -173,23 +173,30 @@ const Header = () => {
           onClick={() => setMenuOpen(false)}
         />
 
-        <nav
-          id={menuId}
-          className="header__drawer"
-          aria-label="Mobile primary"
+        {/* Clip root prevents off-screen drawer transform from widening the page (Android/Samsung). */}
+        <div
+          className="header__drawer-root"
           data-open={menuOpen ? "true" : "false"}
+          aria-hidden={menuOpen ? undefined : true}
         >
-          {renderNavLinks("drawer", true)}
-          <div className="header__mobile-cta">
-            <button
-              type="button"
-              className="header__cta"
-              onClick={() => goTo("final-cta")}
-            >
-              Start My Cooling Plan
-            </button>
-          </div>
-        </nav>
+          <nav
+            id={menuId}
+            className="header__drawer"
+            aria-label="Mobile primary"
+            data-open={menuOpen ? "true" : "false"}
+          >
+            {renderNavLinks("drawer", true)}
+            <div className="header__mobile-cta">
+              <button
+                type="button"
+                className="header__cta"
+                onClick={() => goTo("final-cta")}
+              >
+                Start My Cooling Plan
+              </button>
+            </div>
+          </nav>
+        </div>
       </>,
       document.body,
     );

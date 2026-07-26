@@ -1,10 +1,14 @@
 html {
   font-size: 100%;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
-  min-width: 20rem;
-  overflow-x: clip;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   font-family: var(--font-family-base);
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-regular);
@@ -12,6 +16,12 @@ body {
   letter-spacing: var(--letter-spacing-normal);
   color: var(--color-text);
   background-color: var(--color-background);
+}
+
+main {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 h1,

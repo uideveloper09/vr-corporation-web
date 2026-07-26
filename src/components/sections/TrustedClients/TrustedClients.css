@@ -195,11 +195,13 @@
 .trusted-clients__viewport {
   overflow: hidden;
   min-width: 0;
+  max-width: 100%;
   touch-action: pan-y;
   -webkit-user-select: none;
   user-select: none;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+  contain: paint;
 
   mask-image: none;
   -webkit-mask-image: none;

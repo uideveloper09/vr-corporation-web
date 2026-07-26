@@ -279,22 +279,35 @@
   pointer-events: auto;
 }
 
+/* Isolates off-canvas drawer so translateX(100%) cannot widen document scroll */
+.header__drawer-root {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  overflow: hidden;
+  pointer-events: none;
+  max-width: 100%;
+}
+
+.header__drawer-root[data-open="true"] {
+  pointer-events: auto;
+}
+
 /* Mobile / tablet drawer — portaled to body (< 1024px) */
 .header__drawer {
-  position: fixed;
+  position: absolute;
   top: calc(72px + var(--safe-top, 0px));
   right: 0;
-  z-index: 95;
+  bottom: 0;
 
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 
   width: min(100%, 22.5rem);
-  height: calc(100dvh - 72px - var(--safe-top, 0px));
-  height: calc(100svh - 72px - var(--safe-top, 0px));
-  max-height: calc(100dvh - 72px - var(--safe-top, 0px));
-  max-height: calc(100svh - 72px - var(--safe-top, 0px));
+  max-width: 100%;
+  height: auto;
+  max-height: none;
   margin: 0;
   padding: 1.5rem 1.25rem calc(1.25rem + var(--safe-bottom, 0px));
   box-sizing: border-box;
@@ -390,10 +403,6 @@
 @media (min-width: 48rem) {
   .header__drawer {
     top: calc(88px + var(--safe-top, 0px));
-    height: calc(100dvh - 88px - var(--safe-top, 0px));
-    height: calc(100svh - 88px - var(--safe-top, 0px));
-    max-height: calc(100dvh - 88px - var(--safe-top, 0px));
-    max-height: calc(100svh - 88px - var(--safe-top, 0px));
   }
 }
 
@@ -420,6 +429,7 @@
 }
 
 @media (min-width: 64rem) {
+  .header__drawer-root,
   .header__drawer,
   .header__backdrop,
   .header__menu-toggle {
