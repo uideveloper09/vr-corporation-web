@@ -32,6 +32,7 @@ const TrustedClients = ({
   const { number, eyebrow, title, description, clients } = data;
   const [page, setPage] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [activeClientId, setActiveClientId] = useState<string | null>(null);
   const trackRef = useRef<HTMLUListElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const pageRef = useRef(0);
@@ -273,26 +274,69 @@ const TrustedClients = ({
               onTouchEnd={onTouchEnd}
             >
               <ul ref={trackRef} className="trusted-clients__list">
-                {loopClients.map((client, index) => (
-                  <li
-                    key={`${client.id}-${index}`}
-                    className="trusted-clients__item"
-                    aria-hidden={index >= clients.length}
-                  >
-                    <div className="trusted-clients__logo">
-                      <Image
-                        src={client.logo}
-                        alt={
-                          index < clients.length ? `${client.name} logo` : ""
-                        }
-                        width={160}
-                        height={92}
-                        unoptimized
-                      />
-                    </div>
-                    <p className="trusted-clients__name">{client.name}</p>
-                  </li>
-                ))}
+                {loopClients.map((client, index) => {
+                  const isReplica = index >= clients.length;
+                  const isActive = !isReplica && activeClientId === client.id;
+
+                  return (
+                    <li
+                      key={`${client.id}-${index}`}
+                      className={cx(
+                        "trusted-clients__item",
+                        isActive && "trusted-clients__item--active",
+                      )}
+                      aria-hidden={isReplica}
+                    >
+                      <button
+                        type="button"
+                        className="trusted-clients__card"
+                        tabIndex={isReplica ? -1 : 0}
+                        aria-expanded={isActive}
+                        aria-label={`${client.name}. ${client.about}`}
+                        onClick={() => {
+                          if (isReplica) return;
+                          setActiveClientId((current) =>
+                            current === client.id ? null : client.id,
+                          );
+                          setPaused(true);
+                        }}
+                        onMouseEnter={() => {
+                          if (isReplica) return;
+                          setActiveClientId(client.id);
+                          setPaused(true);
+                        }}
+                        onMouseLeave={() => {
+                          if (isReplica) return;
+                          setActiveClientId(null);
+                          setPaused(false);
+                        }}
+                        onFocus={() => {
+                          if (isReplica) return;
+                          setActiveClientId(client.id);
+                          setPaused(true);
+                        }}
+                        onBlur={() => {
+                          if (isReplica) return;
+                          setActiveClientId(null);
+                          setPaused(false);
+                        }}
+                      >
+                        <div className="trusted-clients__logo">
+                          <Image
+                            className="trusted-clients__logo-image"
+                            src={client.logo}
+                            alt=""
+                            width={160}
+                            height={92}
+                            unoptimized
+                          />
+                        </div>
+                        <p className="trusted-clients__name">{client.name}</p>
+                        <p className="trusted-clients__about">{client.about}</p>
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

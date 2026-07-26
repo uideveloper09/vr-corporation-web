@@ -162,15 +162,18 @@ const Hero = ({ data = heroData, id, className }: HeroProps) => {
             <p className="hero__description">{description}</p>
 
             <div className="hero__actions">
-              <button type="button" className="hero__button hero__button--primary">
-                {primaryCta}
+              <button
+                type="button"
+                className="hero__button hero__button--primary"
+              >
+                <span className="hero__button-label">{primaryCta}</span>
               </button>
 
               <button
                 type="button"
                 className="hero__button hero__button--secondary"
               >
-                {secondaryCta}
+                <span className="hero__button-label">{secondaryCta}</span>
               </button>
             </div>
 
