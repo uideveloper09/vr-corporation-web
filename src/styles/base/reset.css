@@ -92,12 +92,11 @@ a {
     scroll-behavior: auto;
   }
 
-  *,
-  *::before,
-  *::after {
+  /* Decorative reveals only — do not kill drawer/carousel/UI motion */
+  .reveal:not(.reveal--in),
+  .reveal--stagger.reveal--in > * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }

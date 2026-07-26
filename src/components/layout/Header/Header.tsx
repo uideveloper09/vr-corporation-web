@@ -3,7 +3,6 @@
 import {
   useEffect,
   useId,
-  useRef,
   useState,
   type ReactElement,
 } from "react";
@@ -16,9 +15,6 @@ import { navigation, type NavIcon } from "@/data/navigation";
 import { cx } from "@/lib/cx";
 
 import "./Header.css";
-
-const DRAWER_MS = 340;
-const DRAWER_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 const SnowflakeIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -105,9 +101,6 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const menuId = useId();
-  const drawerRef = useRef<HTMLElement>(null);
-  const backdropRef = useRef<HTMLButtonElement>(null);
-  const wasOpenRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -136,106 +129,6 @@ const Header = () => {
       document.removeEventListener("touchmove", onTouchMove);
     };
   }, [menuOpen]);
-
-  // Web Animations API — commit to inline styles so iOS doesn't snap
-  // back to the stylesheet `transform: translate3d(100%)` on cancel.
-  useEffect(() => {
-    if (!mounted) return;
-
-    const drawer = drawerRef.current;
-    const backdrop = backdropRef.current;
-    if (!drawer || !backdrop) return;
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const duration = reduceMotion ? 1 : DRAWER_MS;
-    const backdropDuration = Math.max(1, Math.round(duration * 0.85));
-    const timers: number[] = [];
-
-    const CLOSED = "translate3d(100%, 0, 0)";
-    const OPEN = "translate3d(0, 0, 0)";
-
-    const stopAnimations = (el: HTMLElement) => {
-      el.getAnimations().forEach((animation) => animation.cancel());
-    };
-
-    const run = (
-      el: HTMLElement,
-      keyframes: Keyframe[],
-      options: KeyframeAnimationOptions,
-      commit: string,
-      prop: "transform" | "opacity",
-    ) => {
-      stopAnimations(el);
-      let done = false;
-      const finish = () => {
-        if (done) return;
-        done = true;
-        if (prop === "transform") el.style.transform = commit;
-        else el.style.opacity = commit;
-        stopAnimations(el);
-      };
-
-      const animation = el.animate(keyframes, options);
-      animation.onfinish = finish;
-      // iOS can miss onfinish when the tab was backgrounded mid-gesture
-      timers.push(
-        window.setTimeout(finish, Number(options.duration ?? 0) + 48),
-      );
-    };
-
-    if (menuOpen) {
-      wasOpenRef.current = true;
-      drawer.style.transform = CLOSED;
-      backdrop.style.opacity = "0";
-      void drawer.offsetWidth;
-
-      run(
-        drawer,
-        [{ transform: CLOSED }, { transform: OPEN }],
-        { duration, easing: DRAWER_EASE, fill: "forwards" },
-        OPEN,
-        "transform",
-      );
-      run(
-        backdrop,
-        [{ opacity: 0 }, { opacity: 1 }],
-        { duration: backdropDuration, easing: "ease", fill: "forwards" },
-        "1",
-        "opacity",
-      );
-    } else if (!wasOpenRef.current) {
-      stopAnimations(drawer);
-      stopAnimations(backdrop);
-      drawer.style.transform = CLOSED;
-      backdrop.style.opacity = "0";
-    } else {
-      wasOpenRef.current = false;
-      drawer.style.transform = OPEN;
-      backdrop.style.opacity = "1";
-      void drawer.offsetWidth;
-
-      run(
-        drawer,
-        [{ transform: OPEN }, { transform: CLOSED }],
-        { duration, easing: DRAWER_EASE, fill: "forwards" },
-        CLOSED,
-        "transform",
-      );
-      run(
-        backdrop,
-        [{ opacity: 1 }, { opacity: 0 }],
-        { duration: backdropDuration, easing: "ease", fill: "forwards" },
-        "0",
-        "opacity",
-      );
-    }
-
-    return () => {
-      timers.forEach((id) => window.clearTimeout(id));
-    };
-  }, [menuOpen, mounted]);
 
   const goTo = (targetId: string) => {
     setMenuOpen(false);
@@ -272,7 +165,6 @@ const Header = () => {
     createPortal(
       <>
         <button
-          ref={backdropRef}
           type="button"
           className="header__backdrop"
           aria-label="Close menu"
@@ -282,7 +174,6 @@ const Header = () => {
         />
 
         <nav
-          ref={drawerRef}
           id={menuId}
           className="header__drawer"
           aria-label="Mobile primary"

@@ -39,7 +39,6 @@ const TrustedClients = ({
   const timerRef = useRef<number | null>(null);
   const touchStartX = useRef<number | null>(null);
   const offsetRef = useRef(0);
-  const reduceMotionRef = useRef(false);
 
   const loopClients = [...clients, ...clients];
 
@@ -55,19 +54,13 @@ const TrustedClients = ({
     return viewportRef.current?.clientWidth ?? 0;
   };
 
-  const prefersReducedMotion = () => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  };
-
   const readOffset = () => {
     const track = trackRef.current;
     if (!track) return offsetRef.current;
 
+    const raw = getComputedStyle(track).transform;
     const matrix = new DOMMatrixReadOnly(
-      getComputedStyle(track).transform === "none"
-        ? "matrix(1,0,0,1,0,0)"
-        : getComputedStyle(track).transform,
+      raw === "none" ? "matrix(1,0,0,1,0,0)" : raw,
     );
     return matrix.m41;
   };
@@ -77,13 +70,12 @@ const TrustedClients = ({
     if (!track) return Promise.resolve();
 
     const toX = -offset;
-    const animate = withTransition && !reduceMotionRef.current;
     const fromX = readOffset();
 
     track.getAnimations().forEach((animation) => animation.cancel());
     track.style.transition = "none";
 
-    if (!animate || Math.abs(fromX - toX) < 0.5) {
+    if (!withTransition || Math.abs(fromX - toX) < 0.5) {
       track.style.transform = `translate3d(${toX}px, 0, 0)`;
       offsetRef.current = toX;
       return Promise.resolve();
@@ -137,10 +129,7 @@ const TrustedClients = ({
     pageRef.current = normalized;
     setPage(normalized);
 
-    reduceMotionRef.current = prefersReducedMotion();
-    const animate = withTransition && !reduceMotionRef.current;
-
-    if (!animate) {
+    if (!withTransition) {
       await applyOffset(normalized * step, false);
       return;
     }
@@ -167,8 +156,6 @@ const TrustedClients = ({
   };
 
   useEffect(() => {
-    reduceMotionRef.current = prefersReducedMotion();
-
     const sync = () => {
       void goToPage(pageRef.current, false);
     };
@@ -199,7 +186,7 @@ const TrustedClients = ({
   }, []);
 
   useEffect(() => {
-    if (paused || prefersReducedMotion()) {
+    if (paused) {
       if (timerRef.current != null) {
         window.clearInterval(timerRef.current);
         timerRef.current = null;

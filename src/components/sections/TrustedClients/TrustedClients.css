@@ -383,19 +383,19 @@
 
 @media (max-width: 47.99rem) {
   .trusted-clients__carousel {
-    grid-template-columns: 36px minmax(0, 1fr) 36px;
-    column-gap: 8px;
+    grid-template-columns: 32px minmax(0, 1fr) 32px;
+    column-gap: 6px;
   }
 
   .trusted-clients__nav {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
   }
 
   .trusted-clients__item {
-    flex-basis: min(148px, 42vw);
-    min-height: 156px;
-    padding: 18px 12px 14px;
+    flex: 0 0 min(46vw, 168px);
+    min-height: 148px;
+    padding: 16px 10px 12px;
   }
 
   .trusted-clients__name {
