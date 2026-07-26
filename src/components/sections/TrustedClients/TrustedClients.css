@@ -198,6 +198,8 @@
   touch-action: pan-y;
   -webkit-user-select: none;
   user-select: none;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 
   mask-image: none;
   -webkit-mask-image: none;
@@ -216,6 +218,7 @@
 
   list-style: none;
 
+  /* Slide motion is WAAPI in TrustedClients.tsx (iOS-safe) */
   will-change: transform;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -309,8 +312,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .trusted-clients__list {
-    /* Do not force transform:none — that breaks paging on iOS Reduce Motion */
+  .trusted-clients__nav,
+  .trusted-clients__dot {
     transition: none !important;
   }
 }
@@ -379,9 +382,20 @@
 }
 
 @media (max-width: 47.99rem) {
+  .trusted-clients__carousel {
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    column-gap: 8px;
+  }
+
   .trusted-clients__nav {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .trusted-clients__item {
+    flex-basis: min(148px, 42vw);
+    min-height: 156px;
+    padding: 18px 12px 14px;
   }
 
   .trusted-clients__name {
