@@ -95,8 +95,8 @@
 }
 
 .header .brand-logo {
-  flex-shrink: 1;
-  min-width: 0;
+  flex: 0 1 auto;
+  min-width: 7.5rem;
   margin-right: 8px;
 }
 
@@ -586,8 +586,19 @@
   }
 }
 
+/* 360px Android viewports: keep wordmark visible, shrink instead of hiding */
 @media (max-width: 22.5rem) {
+  .header__symbol {
+    height: 30px;
+    margin-right: 8px;
+  }
+
   .header .brand-logo {
-    display: none;
+    margin-right: 6px;
+  }
+
+  .header .brand-logo__image {
+    max-width: min(148px, 42vw);
+    height: 30px;
   }
 }
