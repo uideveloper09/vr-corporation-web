@@ -8,6 +8,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
+import Link from "next/link";
 
 import BrandLogo from "@/components/brand/BrandLogo";
 import Container from "@/components/ui/Container";
@@ -103,7 +104,10 @@ const Header = () => {
   const menuId = useId();
 
   useEffect(() => {
-    setMounted(true);
+    const frame = window.requestAnimationFrame(() => {
+      setMounted(true);
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   // iOS WebKit: body style locks cancel fixed-layer animations.
@@ -207,18 +211,20 @@ const Header = () => {
         <Container>
           <div className="header__inner">
             <div className="header__brand">
-              <Image
-                className="header__symbol"
-                src="/images/logos/logo-symbol.png"
-                alt=""
-                width={54}
-                height={34}
-                priority
-                unoptimized
-                aria-hidden="true"
-              />
+              <Link className="header__brand-link" href="/" aria-label="V R Corporation home">
+                <Image
+                  className="header__symbol"
+                  src="/images/logos/logo-symbol.png"
+                  alt=""
+                  width={54}
+                  height={34}
+                  priority
+                  unoptimized
+                  aria-hidden="true"
+                />
 
-              <BrandLogo href="/" />
+                <BrandLogo />
+              </Link>
 
               <span className="header__divider" aria-hidden="true" />
 
