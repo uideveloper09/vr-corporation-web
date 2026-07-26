@@ -533,16 +533,17 @@
 
   .contact-visit__inner {
     grid-template-columns: 1fr;
-    row-gap: 28px;
+    row-gap: 20px;
   }
 
   .contact-visit__intro {
-    margin-bottom: 100px;
+    margin-bottom: 24px;
   }
 
   .contact-visit__title {
     max-width: none;
     font-size: 34px;
+    margin-top: 24px;
   }
 
   .contact-visit::after {
@@ -552,11 +553,16 @@
 }
 
 @media (max-width: 560px) {
+  .contact-visit__intro {
+    margin-bottom: 16px;
+  }
+
   .contact-visit__number {
     font-size: 72px;
   }
 
   .contact-visit__title {
+    margin-top: 18px;
     font-size: 28px;
   }
 

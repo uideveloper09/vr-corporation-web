@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import Image from "next/image";
 
 import Container from "@/components/ui/Container";
@@ -20,6 +20,7 @@ export type TrustedClientsProps = {
 
 const PAGE_COUNT = 3;
 const AUTO_MS = 4000;
+const SWIPE_THRESHOLD = 40;
 
 const TrustedClients = ({
   data = trustedClientsData,
@@ -30,26 +31,41 @@ const TrustedClients = ({
   const [page, setPage] = useState(0);
   const [paused, setPaused] = useState(false);
   const trackRef = useRef<HTMLUListElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const pageRef = useRef(0);
   const animatingRef = useRef(false);
   const timerRef = useRef<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const reduceMotionRef = useRef(false);
 
   const loopClients = [...clients, ...clients];
 
   const getStep = () => {
     const track = trackRef.current;
     if (!track) return 0;
-    return track.scrollWidth / 2 / PAGE_COUNT;
+
+    // Half track = one full logo set (list is duplicated for looping)
+    const half = track.scrollWidth / 2;
+    if (half > 0) return half / PAGE_COUNT;
+
+    // iOS can report 0 before images layout — temporary fallback
+    return viewportRef.current?.clientWidth ?? 0;
+  };
+
+  const prefersReducedMotion = () => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   };
 
   const applyOffset = (offset: number, withTransition: boolean) => {
     const track = trackRef.current;
     if (!track) return;
 
-    track.style.transition = withTransition
+    const animate = withTransition && !reduceMotionRef.current;
+    track.style.transition = animate
       ? "transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)"
       : "none";
-    track.style.transform = `translate3d(-${offset}px, 0, 0)`;
+    track.style.transform = `translate3d(${-offset}px, 0, 0)`;
   };
 
   const goToPage = (target: number, withTransition = true) => {
@@ -59,22 +75,21 @@ const TrustedClients = ({
     const step = getStep();
     if (step <= 0) return;
 
-    const current = pageRef.current;
     let next = target;
-
-    // Normalize into -1 .. PAGE_COUNT range for wrap detection
     if (target < 0) next = -1;
     if (target >= PAGE_COUNT) next = PAGE_COUNT;
 
     const wrapForward = next === PAGE_COUNT;
     const wrapBackward = next === -1;
-    const normalized =
-      ((target % PAGE_COUNT) + PAGE_COUNT) % PAGE_COUNT;
+    const normalized = ((target % PAGE_COUNT) + PAGE_COUNT) % PAGE_COUNT;
 
     pageRef.current = normalized;
     setPage(normalized);
 
-    if (!withTransition) {
+    reduceMotionRef.current = prefersReducedMotion();
+    const animate = withTransition && !reduceMotionRef.current;
+
+    if (!animate) {
       applyOffset(normalized * step, false);
       return;
     }
@@ -100,7 +115,6 @@ const TrustedClients = ({
       return;
     }
 
-    void current;
     applyOffset(normalized * step, true);
     window.setTimeout(() => {
       animatingRef.current = false;
@@ -108,19 +122,37 @@ const TrustedClients = ({
   };
 
   useEffect(() => {
+    reduceMotionRef.current = prefersReducedMotion();
+
     const sync = () => goToPage(pageRef.current, false);
-    // Wait a frame so layout/images measure correctly
-    const id = window.requestAnimationFrame(sync);
+    const frame = window.requestAnimationFrame(() => {
+      sync();
+      // Second pass after images/fonts settle (important on iOS)
+      window.setTimeout(sync, 120);
+      window.setTimeout(sync, 400);
+    });
+
+    const track = trackRef.current;
+    const images = track?.querySelectorAll("img") ?? [];
+    const onImageLoad = () => sync();
+    images.forEach((img) => {
+      if (!img.complete) img.addEventListener("load", onImageLoad);
+    });
+
     window.addEventListener("resize", sync);
+    window.addEventListener("orientationchange", sync);
+
     return () => {
-      window.cancelAnimationFrame(id);
+      window.cancelAnimationFrame(frame);
       window.removeEventListener("resize", sync);
+      window.removeEventListener("orientationchange", sync);
+      images.forEach((img) => img.removeEventListener("load", onImageLoad));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (paused) {
+    if (paused || prefersReducedMotion()) {
       if (timerRef.current != null) {
         window.clearInterval(timerRef.current);
         timerRef.current = null;
@@ -140,6 +172,25 @@ const TrustedClients = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paused]);
+
+  const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = event.changedTouches[0]?.clientX ?? null;
+    setPaused(true);
+  };
+
+  const onTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    const startX = touchStartX.current;
+    const endX = event.changedTouches[0]?.clientX;
+    touchStartX.current = null;
+    setPaused(false);
+
+    if (startX == null || endX == null) return;
+    const delta = endX - startX;
+    if (Math.abs(delta) < SWIPE_THRESHOLD) return;
+
+    if (delta < 0) goToPage(pageRef.current + 1, true);
+    else goToPage(pageRef.current - 1, true);
+  };
 
   return (
     <section
@@ -181,7 +232,12 @@ const TrustedClients = ({
               </svg>
             </button>
 
-            <div className="trusted-clients__viewport">
+            <div
+              ref={viewportRef}
+              className="trusted-clients__viewport"
+              onTouchStart={onTouchStart}
+              onTouchEnd={onTouchEnd}
+            >
               <ul ref={trackRef} className="trusted-clients__list">
                 {loopClients.map((client, index) => (
                   <li

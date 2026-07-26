@@ -59,8 +59,8 @@
   flex-shrink: 0;
 
   width: auto;
-  height: 28px;
-  margin-right: 8px;
+  height: 34px;
+  margin-right: 10px;
 
   object-fit: contain;
   object-position: left center;
@@ -75,8 +75,8 @@
 .header .brand-logo__image {
   display: block;
   width: auto;
-  max-width: 120px;
-  height: 28px;
+  max-width: 168px;
+  height: 34px;
   object-fit: contain;
   object-position: left center;
 }
@@ -86,7 +86,7 @@
   flex-shrink: 0;
 
   width: 2px;
-  height: 28px;
+  height: 34px;
   margin-left: 4px;
   margin-right: 12px;
 
@@ -427,16 +427,17 @@
 
 @media (min-width: 40rem) {
   .header__symbol {
-    height: 32px;
+    height: 34px;
   }
 
   .header .brand-logo__image {
-    max-width: 150px;
-    height: 32px;
+    max-width: 155px;
+    height: 34px;
   }
 
   .header__divider {
     display: block;
+    height: 34px;
   }
 
   .header__partner {
@@ -444,7 +445,7 @@
   }
 
   .header__partner-image {
-    height: 24px;
+    height: 26px;
   }
 }
 
@@ -460,7 +461,7 @@
 
   .header__symbol,
   .header .brand-logo__image {
-    height: 34px;
+    height: 36px;
   }
 
   .header .brand-logo__image {
@@ -472,7 +473,7 @@
   }
 
   .header__divider {
-    height: 34px;
+    height: 36px;
     margin-left: 6px;
     margin-right: 16px;
   }

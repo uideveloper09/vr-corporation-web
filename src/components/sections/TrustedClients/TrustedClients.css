@@ -195,6 +195,9 @@
 .trusted-clients__viewport {
   overflow: hidden;
   min-width: 0;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
 
   mask-image: none;
   -webkit-mask-image: none;
@@ -214,6 +217,9 @@
   list-style: none;
 
   will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
   filter: none;
   box-shadow: none;
 }
@@ -304,7 +310,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .trusted-clients__list {
-    transform: none !important;
+    /* Do not force transform:none — that breaks paging on iOS Reduce Motion */
+    transition: none !important;
   }
 }
 
