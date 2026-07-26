@@ -195,6 +195,22 @@ html {
   }
 }
 
+/* Phones: keep showroom → stay-cool tight (wave decor must not read as empty section) */
+@media (max-width: 47.99rem) {
+  .showroom {
+    padding-block: 1.5rem 0.75rem;
+  }
+
+  .stay-cool {
+    padding-block: 1.25rem 2rem;
+  }
+
+  .showroom__inner,
+  .stay-cool__inner {
+    gap: 1rem;
+  }
+}
+
 /* Large phones / small tablets: elegant header number watermark */
 @media (max-width: 47.99rem) {
   .product-solutions__header,

@@ -58,8 +58,9 @@ const Showroom = ({
                 className="showroom__image"
                 src={image.src}
                 alt={image.alt}
-                width={960}
-                height={640}
+                width={1174}
+                height={738}
+                sizes="(max-width: 63.99rem) 100vw, 60vw"
                 unoptimized
                 priority={false}
               />

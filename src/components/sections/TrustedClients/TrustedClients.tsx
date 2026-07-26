@@ -20,6 +20,8 @@ export type TrustedClientsProps = {
 
 const PAGE_COUNT = 3;
 const AUTO_MS = 4000;
+const SLIDE_MS = 650;
+const SLIDE_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 const SWIPE_THRESHOLD = 40;
 
 const TrustedClients = ({
@@ -36,6 +38,7 @@ const TrustedClients = ({
   const animatingRef = useRef(false);
   const timerRef = useRef<number | null>(null);
   const touchStartX = useRef<number | null>(null);
+  const offsetRef = useRef(0);
   const reduceMotionRef = useRef(false);
 
   const loopClients = [...clients, ...clients];
@@ -57,18 +60,66 @@ const TrustedClients = ({
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   };
 
-  const applyOffset = (offset: number, withTransition: boolean) => {
+  const readOffset = () => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track) return offsetRef.current;
 
-    const animate = withTransition && !reduceMotionRef.current;
-    track.style.transition = animate
-      ? "transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)"
-      : "none";
-    track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+    const matrix = new DOMMatrixReadOnly(
+      getComputedStyle(track).transform === "none"
+        ? "matrix(1,0,0,1,0,0)"
+        : getComputedStyle(track).transform,
+    );
+    return matrix.m41;
   };
 
-  const goToPage = (target: number, withTransition = true) => {
+  const applyOffset = (offset: number, withTransition: boolean) => {
+    const track = trackRef.current;
+    if (!track) return Promise.resolve();
+
+    const toX = -offset;
+    const animate = withTransition && !reduceMotionRef.current;
+    const fromX = readOffset();
+
+    track.getAnimations().forEach((animation) => animation.cancel());
+    track.style.transition = "none";
+
+    if (!animate || Math.abs(fromX - toX) < 0.5) {
+      track.style.transform = `translate3d(${toX}px, 0, 0)`;
+      offsetRef.current = toX;
+      return Promise.resolve();
+    }
+
+    track.style.transform = `translate3d(${fromX}px, 0, 0)`;
+    void track.offsetWidth;
+
+    return new Promise<void>((resolve) => {
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        track.style.transform = `translate3d(${toX}px, 0, 0)`;
+        offsetRef.current = toX;
+        track.getAnimations().forEach((animation) => animation.cancel());
+        resolve();
+      };
+
+      const animation = track.animate(
+        [
+          { transform: `translate3d(${fromX}px, 0, 0)` },
+          { transform: `translate3d(${toX}px, 0, 0)` },
+        ],
+        {
+          duration: SLIDE_MS,
+          easing: SLIDE_EASE,
+          fill: "forwards",
+        },
+      );
+      animation.onfinish = finish;
+      window.setTimeout(finish, SLIDE_MS + 48);
+    });
+  };
+
+  const goToPage = async (target: number, withTransition = true) => {
     const track = trackRef.current;
     if (!track || animatingRef.current) return;
 
@@ -90,41 +141,37 @@ const TrustedClients = ({
     const animate = withTransition && !reduceMotionRef.current;
 
     if (!animate) {
-      applyOffset(normalized * step, false);
+      await applyOffset(normalized * step, false);
       return;
     }
 
     animatingRef.current = true;
 
-    if (wrapForward) {
-      applyOffset(PAGE_COUNT * step, true);
-      window.setTimeout(() => {
-        applyOffset(0, false);
-        animatingRef.current = false;
-      }, 680);
-      return;
-    }
+    try {
+      if (wrapForward) {
+        await applyOffset(PAGE_COUNT * step, true);
+        await applyOffset(0, false);
+        return;
+      }
 
-    if (wrapBackward) {
-      applyOffset(PAGE_COUNT * step, false);
-      void track.offsetWidth;
-      applyOffset((PAGE_COUNT - 1) * step, true);
-      window.setTimeout(() => {
-        animatingRef.current = false;
-      }, 680);
-      return;
-    }
+      if (wrapBackward) {
+        await applyOffset(PAGE_COUNT * step, false);
+        await applyOffset((PAGE_COUNT - 1) * step, true);
+        return;
+      }
 
-    applyOffset(normalized * step, true);
-    window.setTimeout(() => {
+      await applyOffset(normalized * step, true);
+    } finally {
       animatingRef.current = false;
-    }, 680);
+    }
   };
 
   useEffect(() => {
     reduceMotionRef.current = prefersReducedMotion();
 
-    const sync = () => goToPage(pageRef.current, false);
+    const sync = () => {
+      void goToPage(pageRef.current, false);
+    };
     const frame = window.requestAnimationFrame(() => {
       sync();
       // Second pass after images/fonts settle (important on iOS)
@@ -161,7 +208,7 @@ const TrustedClients = ({
     }
 
     timerRef.current = window.setInterval(() => {
-      goToPage(pageRef.current + 1, true);
+      void goToPage(pageRef.current + 1, true);
     }, AUTO_MS);
 
     return () => {
@@ -188,8 +235,8 @@ const TrustedClients = ({
     const delta = endX - startX;
     if (Math.abs(delta) < SWIPE_THRESHOLD) return;
 
-    if (delta < 0) goToPage(pageRef.current + 1, true);
-    else goToPage(pageRef.current - 1, true);
+    if (delta < 0) void goToPage(pageRef.current + 1, true);
+    else void goToPage(pageRef.current - 1, true);
   };
 
   return (
@@ -217,7 +264,7 @@ const TrustedClients = ({
             <button
               type="button"
               className="trusted-clients__nav trusted-clients__nav--prev"
-              onClick={() => goToPage(pageRef.current - 1, true)}
+              onClick={() => void goToPage(pageRef.current - 1, true)}
               aria-label="Previous clients"
             >
               <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -265,7 +312,7 @@ const TrustedClients = ({
             <button
               type="button"
               className="trusted-clients__nav trusted-clients__nav--next"
-              onClick={() => goToPage(pageRef.current + 1, true)}
+              onClick={() => void goToPage(pageRef.current + 1, true)}
               aria-label="Next clients"
             >
               <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -298,7 +345,7 @@ const TrustedClients = ({
                     ? "trusted-clients__dot trusted-clients__dot--active"
                     : "trusted-clients__dot"
                 }
-                onClick={() => goToPage(index, true)}
+                onClick={() => void goToPage(index, true)}
               />
             ))}
           </div>

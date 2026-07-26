@@ -18,11 +18,11 @@
 
   position: absolute;
   right: -6%;
-  bottom: -18%;
+  bottom: 0;
   z-index: 0;
 
   width: min(58vw, 680px);
-  height: 62%;
+  height: 55%;
 
   pointer-events: none;
 
@@ -40,7 +40,7 @@
   z-index: 0;
 
   width: min(55vw, 620px);
-  height: 220px;
+  height: 140px;
 
   pointer-events: none;
 
@@ -215,6 +215,7 @@
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 1174 / 738;
 
   object-fit: contain;
   object-position: center bottom;
@@ -247,16 +248,6 @@
     font-size: clamp(4.5rem, 12vw, 7rem);
   }
 
-  .showroom__intro {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "eyebrow"
-      "title"
-      "description";
-    column-gap: 0;
-    row-gap: 12px;
-  }
-
   .showroom__title {
     max-width: none;
     font-size: clamp(1.75rem, 4vw, 2.25rem);
@@ -267,26 +258,11 @@
   }
 }
 
-@media (max-width: 47.99rem) {
-  .showroom {
-    padding-block: 2.5rem;
-  }
-
-  .showroom__header {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .showroom__number {
-    font-size: 3.5rem;
-    line-height: 1;
-  }
-}
-
 @media (max-width: 63.99rem) {
   .showroom__body {
     grid-template-columns: 1fr;
-    row-gap: 24px;
+    align-items: start;
+    row-gap: 1.25rem;
   }
 
   .showroom__copy {
@@ -296,9 +272,66 @@
   .showroom__cta {
     width: 100%;
   }
+
+  .showroom::before {
+    right: -10%;
+    bottom: 0;
+    height: 42%;
+  }
+
+  .showroom::after {
+    height: 120px;
+  }
 }
 
 @media (max-width: 47.99rem) {
+  .showroom {
+    padding-block: 1.5rem 0.75rem;
+  }
+
+  .showroom__header {
+    flex-direction: column;
+    gap: 8px;
+    padding-block: 0 4px;
+  }
+
+  .showroom__number {
+    font-size: 3.5rem;
+    line-height: 1;
+  }
+
+  .showroom__inner {
+    gap: 1rem;
+  }
+
+  .showroom__body {
+    row-gap: 0.85rem;
+  }
+
+  .showroom__description {
+    margin-bottom: 0.85rem;
+  }
+
+  .showroom__media {
+    line-height: 0;
+  }
+
+  .showroom__image {
+    width: 100%;
+    height: auto;
+    max-height: min(56vw, 240px);
+    margin-inline: auto;
+  }
+
+  .showroom::before {
+    display: none;
+  }
+
+  .showroom::after {
+    height: 64px;
+    opacity: 0.55;
+  }
+
   .showroom__title {
     font-size: clamp(1.75rem, 7vw, 2.1rem);
   }
