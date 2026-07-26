@@ -1,11 +1,30 @@
+:root {
+  --header-height: 72px;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --header-height: 88px;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --header-height: 96px;
+  }
+}
+
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
 
   width: 100%;
-  min-height: calc(72px + var(--safe-top));
-  padding-top: var(--safe-top);
+  max-width: 100%;
+  min-height: calc(var(--header-height) + var(--safe-top, 0px));
+  padding-top: var(--safe-top, 0px);
 
   box-sizing: border-box;
 
@@ -18,6 +37,15 @@
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Keeps layout flow since header is fixed (sticky breaks under overflow-x:hidden). */
+.header-spacer {
+  display: block;
+  width: 100%;
+  height: calc(var(--header-height) + var(--safe-top, 0px));
+  flex-shrink: 0;
+  pointer-events: none;
 }
 
 .header .container {
@@ -296,7 +324,7 @@
 /* Mobile / tablet drawer — portaled to body (< 1024px) */
 .header__drawer {
   position: absolute;
-  top: calc(72px + var(--safe-top, 0px));
+  top: calc(var(--header-height, 72px) + var(--safe-top, 0px));
   right: 0;
   bottom: 0;
 
@@ -401,8 +429,36 @@
 }
 
 @media (min-width: 48rem) {
+  .header {
+    min-height: calc(var(--header-height) + var(--safe-top, 0px));
+  }
+
   .header__drawer {
-    top: calc(88px + var(--safe-top, 0px));
+    top: calc(var(--header-height) + var(--safe-top, 0px));
+  }
+
+  .header__inner {
+    min-height: 88px;
+    padding-block: 18px;
+  }
+
+  .header__symbol,
+  .header .brand-logo__image {
+    height: 36px;
+  }
+
+  .header .brand-logo__image {
+    max-width: none;
+  }
+
+  .header__partner-image {
+    height: 28px;
+  }
+
+  .header__divider {
+    height: 36px;
+    margin-left: 6px;
+    margin-right: 16px;
   }
 }
 
@@ -463,40 +519,11 @@
   }
 }
 
-@media (min-width: 48rem) {
-  .header {
-    min-height: calc(88px + var(--safe-top));
-  }
-
-  .header__inner {
-    min-height: 88px;
-    padding-block: 18px;
-  }
-
-  .header__symbol,
-  .header .brand-logo__image {
-    height: 36px;
-  }
-
-  .header .brand-logo__image {
-    max-width: none;
-  }
-
-  .header__partner-image {
-    height: 28px;
-  }
-
-  .header__divider {
-    height: 36px;
-    margin-left: 6px;
-    margin-right: 16px;
-  }
-}
-
 @media (min-width: 64rem) {
   .header {
-    height: calc(96px + var(--safe-top));
-    min-height: calc(96px + var(--safe-top));
+    --header-height: 96px;
+    height: calc(var(--header-height) + var(--safe-top, 0px));
+    min-height: calc(var(--header-height) + var(--safe-top, 0px));
   }
 
   .header__inner {
