@@ -13,6 +13,7 @@ import type { EnquiryFailure, EnquirySuccess } from "@/lib/enquiry/types";
 import {
   createEnquiryReference,
   enquiryRequestType,
+  normalizeEnquiryPayload,
   parseEnquiryBody,
   validateEnquiry,
 } from "@/lib/enquiry/validate";
@@ -72,16 +73,17 @@ export async function POST(request: Request) {
     return NextResponse.json(failure, { status: 503 });
   }
 
+  const normalized = normalizeEnquiryPayload(payload);
   const reference = createEnquiryReference();
-  const requestType = enquiryRequestType(payload.requirement);
+  const requestType = enquiryRequestType(normalized.requirement);
 
   try {
     if (emailReady) {
-      await sendEnquiryEmail(payload, reference);
+      await sendEnquiryEmail(normalized, reference);
     }
 
     if (sheetReady) {
-      await appendEnquiryToGoogleSheet(toSheetEnquiryRow(payload, reference));
+      await appendEnquiryToGoogleSheet(toSheetEnquiryRow(normalized, reference));
     }
   } catch (error) {
     console.error("[enquiry] Delivery failed", error);

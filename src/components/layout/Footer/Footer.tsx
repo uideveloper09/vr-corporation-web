@@ -145,7 +145,7 @@ const socialIcons = {
 } as const;
 
 const Footer = () => {
-  const { brand, columns, contact, socials, taglines, legal } = footerData;
+  const { brand, columns, contact, socials, taglines, legal, legalLinks } = footerData;
 
   return (
     <footer className="footer">
@@ -277,13 +277,23 @@ const Footer = () => {
             </div>
 
             <div className="footer__legal">
-              {legal.map((item, index) => (
-                <span key={item}>
+              {legalLinks.map((link, index) => (
+                <span key={link.href}>
                   {index > 0 ? (
                     <span className="footer__legal-sep" aria-hidden="true">
                       |
                     </span>
                   ) : null}
+                  <a className="footer__legal-link" href={link.href}>
+                    {link.label}
+                  </a>
+                </span>
+              ))}
+              {legal.map((item) => (
+                <span key={item}>
+                  <span className="footer__legal-sep" aria-hidden="true">
+                    |
+                  </span>
                   <span>{item}</span>
                 </span>
               ))}

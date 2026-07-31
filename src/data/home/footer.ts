@@ -58,4 +58,8 @@ export const footerData = {
     "Daikin Authorized Partner",
     "All trademarks are the property of their respective owners.",
   ],
+  legalLinks: [
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms & Disclaimer", href: "/terms-and-disclaimer" },
+  ],
 };

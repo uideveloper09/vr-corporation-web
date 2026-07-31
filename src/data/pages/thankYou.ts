@@ -39,6 +39,8 @@ export const thankYouPageData = {
     "A site visit or service slot is not confirmed until the team contacts you.",
   privacyLine:
     "Your submitted details are used only to respond to this request and provide the related follow-up.",
+  privacyHref: "/privacy-policy",
+  privacyLinkLabel: "Privacy Policy",
   nextSteps: {
     eyebrow: "WHAT HAPPENS NEXT",
     title: "Next Steps.",

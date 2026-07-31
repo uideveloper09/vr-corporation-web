@@ -101,7 +101,9 @@
   min-height: 3rem;
   padding: 0.7rem 1.25rem;
 
+  border: 1px solid transparent;
   border-radius: 999px;
+  font: inherit;
   font-size: 0.9375rem;
   font-weight: 700;
   line-height: 1;
@@ -287,6 +289,12 @@
   margin-left: 0.45rem;
   color: #7a8aa8;
   font-weight: 500;
+}
+
+.contact-page__required {
+  margin-left: 0.2rem;
+  color: #d92d20;
+  font-weight: 700;
 }
 
 .contact-page__input,

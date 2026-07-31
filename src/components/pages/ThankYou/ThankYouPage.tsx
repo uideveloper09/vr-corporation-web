@@ -164,7 +164,12 @@ const ThankYouPage = ({
                 })}
               </div>
 
-              <p className="thank-you-page__privacy">{data.privacyLine}</p>
+              <p className="thank-you-page__privacy">
+                {data.privacyLine}{" "}
+                <Link className="thank-you-page__privacy-link" href={data.privacyHref}>
+                  {data.privacyLinkLabel}
+                </Link>
+              </p>
             </div>
           </Container>
         </section>

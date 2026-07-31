@@ -5,6 +5,16 @@ import { useRouter } from "next/navigation";
 
 import { contactPageData } from "@/data/pages/contact";
 import type { EnquiryFailure, EnquirySuccess } from "@/lib/enquiry/types";
+import {
+  normalizeEmail,
+  normalizeFullName,
+  normalizeLocality,
+  normalizeMobile,
+  validateEmail,
+  validateFullName,
+  validateLocality,
+  validateMobile,
+} from "@/lib/validation";
 import { cx } from "@/lib/cx";
 
 type FormData = typeof contactPageData.form;
@@ -24,12 +34,6 @@ type FieldKey =
   | "consent";
 type FieldErrors = Partial<Record<FieldKey, string>>;
 
-const isValidMobile = (value: string) =>
-  /^[6-9]\d{9}$/.test(value.replace(/\s+/g, ""));
-
-const isValidEmail = (value: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
-
 const mapServerFieldErrors = (
   fieldErrors: NonNullable<EnquiryFailure["fieldErrors"]>,
 ): FieldErrors => ({
@@ -41,6 +45,12 @@ const mapServerFieldErrors = (
   locality: fieldErrors.locality,
   consent: fieldErrors.consent,
 });
+
+const RequiredMark = () => (
+  <span className="contact-page__required" aria-hidden="true">
+    *
+  </span>
+);
 
 const ContactEnquiryForm = ({
   data = contactPageData.form,
@@ -64,21 +74,17 @@ const ContactEnquiryForm = ({
   const getFieldError = (field: FieldKey): string | undefined => {
     switch (field) {
       case "name":
-        return name.trim() ? undefined : "Please enter your full name.";
+        return validateFullName(name);
       case "mobile":
-        if (!mobile.trim()) return "Please enter your mobile number.";
-        if (!isValidMobile(mobile)) return "Enter a valid 10-digit mobile number.";
-        return undefined;
+        return validateMobile(mobile);
       case "email":
-        if (!email.trim()) return "Please enter your email address.";
-        if (!isValidEmail(email)) return "Enter a valid email address.";
-        return undefined;
+        return validateEmail(email);
       case "preference":
         return preference ? undefined : "Select a preferred contact method.";
       case "requirement":
         return requirement ? undefined : "Select your requirement.";
       case "locality":
-        return locality.trim() ? undefined : "Please enter your locality.";
+        return validateLocality(locality);
       case "consent":
         return consent ? undefined : "Consent is required to send this enquiry.";
       default:
@@ -86,34 +92,37 @@ const ContactEnquiryForm = ({
     }
   };
 
-  const clearFieldError = (field: FieldKey) => {
+  const setFieldError = (field: FieldKey, error: string | undefined) => {
     setErrors((prev) => {
-      if (!prev[field]) return prev;
-      const next = { ...prev };
-      delete next[field];
-      return next;
+      if (!error) {
+        if (!prev[field]) return prev;
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      }
+      if (prev[field] === error) return prev;
+      return { ...prev, [field]: error };
     });
   };
 
-  /** On focus out: if field is now valid, remove its error automatically. */
+  /** On blur: show format errors; clear when the field becomes valid. */
   const onFieldBlur = (field: FieldKey) => {
-    if (!errors[field]) return;
-    if (!getFieldError(field)) clearFieldError(field);
+    setFieldError(field, getFieldError(field));
   };
 
   const setPreferenceAndClear = (value: string) => {
     setPreference(value);
-    if (value) clearFieldError("preference");
+    if (value) setFieldError("preference", undefined);
   };
 
   const setRequirementAndClear = (value: string) => {
     setRequirement(value);
-    if (value) clearFieldError("requirement");
+    if (value) setFieldError("requirement", undefined);
   };
 
   const setConsentAndClear = (value: boolean) => {
     setConsent(value);
-    if (value) clearFieldError("consent");
+    if (value) setFieldError("consent", undefined);
   };
 
   const validate = (): FieldErrors => {
@@ -142,12 +151,12 @@ const ContactEnquiryForm = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fullName: name.trim(),
-          mobile: mobile.replace(/\s+/g, ""),
-          email: email.trim().toLowerCase(),
+          fullName: normalizeFullName(name),
+          mobile: normalizeMobile(mobile),
+          email: normalizeEmail(email),
           contactPreference: preference,
           requirement,
-          locality: locality.trim(),
+          locality: normalizeLocality(locality),
           message: message.trim(),
           consent,
           website,
@@ -200,6 +209,7 @@ const ContactEnquiryForm = ({
       <div className="contact-page__field">
         <label className="contact-page__label" htmlFor={`${formId}-${data.fields.name.id}`}>
           {data.fields.name.label}
+          <RequiredMark />
         </label>
         <input
           id={`${formId}-${data.fields.name.id}`}
@@ -210,6 +220,7 @@ const ContactEnquiryForm = ({
           name="fullName"
           type="text"
           autoComplete="name"
+          maxLength={90}
           placeholder={data.fields.name.placeholder}
           value={name}
           onChange={(event) => setName(event.target.value)}
@@ -228,6 +239,7 @@ const ContactEnquiryForm = ({
       <div className="contact-page__field">
         <label className="contact-page__label" htmlFor={`${formId}-${data.fields.mobile.id}`}>
           {data.fields.mobile.label}
+          <RequiredMark />
         </label>
         <input
           id={`${formId}-${data.fields.mobile.id}`}
@@ -239,9 +251,12 @@ const ContactEnquiryForm = ({
           type="tel"
           inputMode="numeric"
           autoComplete="tel"
+          maxLength={13}
           placeholder={data.fields.mobile.placeholder}
           value={mobile}
-          onChange={(event) => setMobile(event.target.value)}
+          onChange={(event) =>
+            setMobile(event.target.value.replace(/[^\d+\s-]/g, ""))
+          }
           onBlur={() => onFieldBlur("mobile")}
           aria-invalid={Boolean(errors.mobile)}
           aria-describedby={errors.mobile ? `${formId}-mobile-error` : undefined}
@@ -257,6 +272,7 @@ const ContactEnquiryForm = ({
       <div className="contact-page__field">
         <label className="contact-page__label" htmlFor={`${formId}-${data.fields.email.id}`}>
           {data.fields.email.label}
+          <RequiredMark />
         </label>
         <input
           id={`${formId}-${data.fields.email.id}`}
@@ -289,7 +305,10 @@ const ContactEnquiryForm = ({
           errors.preference && "contact-page__fieldset--error",
         )}
       >
-        <legend className="contact-page__label">{data.fields.contactPreference.label}</legend>
+        <legend className="contact-page__label">
+          {data.fields.contactPreference.label}
+          <RequiredMark />
+        </legend>
         <div className="contact-page__options">
           {data.fields.contactPreference.options.map((option) => (
             <label key={option.value} className="contact-page__option">
@@ -315,6 +334,7 @@ const ContactEnquiryForm = ({
           htmlFor={`${formId}-${data.fields.requirement.id}`}
         >
           {data.fields.requirement.label}
+          <RequiredMark />
         </label>
         <select
           id={`${formId}-${data.fields.requirement.id}`}
@@ -347,6 +367,7 @@ const ContactEnquiryForm = ({
           htmlFor={`${formId}-${data.fields.locality.id}`}
         >
           {data.fields.locality.label}
+          <RequiredMark />
         </label>
         <input
           id={`${formId}-${data.fields.locality.id}`}
@@ -396,7 +417,10 @@ const ContactEnquiryForm = ({
             onChange={(event) => setConsentAndClear(event.target.checked)}
             aria-invalid={Boolean(errors.consent)}
           />
-          <span>{data.consent}</span>
+          <span>
+            {data.consent}
+            <RequiredMark />
+          </span>
         </label>
         {errors.consent ? (
           <p className="contact-page__field-error">{errors.consent}</p>

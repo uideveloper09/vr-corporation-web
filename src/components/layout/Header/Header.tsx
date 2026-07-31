@@ -15,6 +15,11 @@ import BrandLogo from "@/components/brand/BrandLogo";
 import Container from "@/components/ui/Container";
 import { navigation, type NavIcon, type NavItem } from "@/data/navigation";
 import { cx } from "@/lib/cx";
+import {
+  consumePendingScroll,
+  queueScrollToSection,
+  scrollToSection,
+} from "@/lib/scrollToSection";
 
 import "./Header.css";
 
@@ -92,13 +97,6 @@ const navIcons: Record<NavIcon, () => ReactElement> = {
   pin: PinIcon,
 };
 
-const scrollToSection = (targetId: string) => {
-  const section = document.getElementById(targetId);
-  if (!section) return;
-
-  section.scrollIntoView({ behavior: "smooth", block: "start" });
-};
-
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -112,6 +110,10 @@ const Header = () => {
     });
     return () => window.cancelAnimationFrame(frame);
   }, []);
+
+  useEffect(() => {
+    consumePendingScroll();
+  }, [pathname]);
 
   // iOS WebKit: body style locks cancel fixed-layer animations.
   // Block background scroll with touchmove instead.
@@ -145,16 +147,15 @@ const Header = () => {
       return;
     }
 
-    const hash = item.href.includes("#")
-      ? item.href.slice(item.href.indexOf("#") + 1)
-      : item.targetId;
+    const targetId = item.targetId;
 
     if (pathname === "/") {
-      window.requestAnimationFrame(() => scrollToSection(hash));
+      window.requestAnimationFrame(() => scrollToSection(targetId));
       return;
     }
 
-    router.push(`/#${hash}`);
+    queueScrollToSection(targetId);
+    router.push("/");
   };
 
   const goToFinalCta = () => {
@@ -163,7 +164,8 @@ const Header = () => {
       window.requestAnimationFrame(() => scrollToSection("final-cta"));
       return;
     }
-    router.push("/#final-cta");
+    queueScrollToSection("final-cta");
+    router.push("/");
   };
 
   const renderNavLinks = (keyPrefix: string, withIcons = false) => (

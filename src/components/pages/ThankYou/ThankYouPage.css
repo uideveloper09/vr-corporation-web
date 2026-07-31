@@ -388,6 +388,21 @@
   line-height: 1.5;
 }
 
+.thank-you-page__privacy-link {
+  color: #7eb6ff;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.thank-you-page__privacy-link:hover {
+  color: #a8d0ff;
+}
+
+.thank-you-page__privacy-link:focus-visible {
+  outline: 2px solid #7eb6ff;
+  outline-offset: 2px;
+}
+
 @media (hover: none), (pointer: coarse) {
   .thank-you-page__step:hover,
   .thank-you-page__button:hover {

@@ -1,4 +1,14 @@
 import { requirementToThankYouType } from "@/data/pages/thankYou";
+import {
+  normalizeEmail,
+  normalizeFullName,
+  normalizeLocality,
+  normalizeMobile,
+  validateEmail,
+  validateFullName,
+  validateLocality,
+  validateMobile,
+} from "@/lib/validation";
 
 import {
   contactPreferences,
@@ -6,12 +16,6 @@ import {
   type EnquiryPayload,
   requirementValues,
 } from "./types";
-
-const isValidMobile = (value: string) =>
-  /^[6-9]\d{9}$/.test(value.replace(/\s+/g, ""));
-
-const isValidEmail = (value: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 
 export const createEnquiryReference = () => {
   const stamp = Date.now().toString(36).toUpperCase().slice(-6);
@@ -42,26 +46,31 @@ export const parseEnquiryBody = (body: unknown): EnquiryPayload | null => {
   };
 };
 
+/** Normalize enquiry fields after validation succeeds. */
+export const normalizeEnquiryPayload = (
+  payload: EnquiryPayload,
+): EnquiryPayload => ({
+  ...payload,
+  fullName: normalizeFullName(payload.fullName),
+  mobile: normalizeMobile(payload.mobile),
+  email: normalizeEmail(payload.email),
+  locality: normalizeLocality(payload.locality),
+  message: payload.message.trim(),
+});
+
 export const validateEnquiry = (
   payload: EnquiryPayload,
 ): EnquiryFailure["fieldErrors"] | null => {
   const fieldErrors: NonNullable<EnquiryFailure["fieldErrors"]> = {};
 
-  if (!payload.fullName.trim()) {
-    fieldErrors.fullName = "Please enter your full name.";
-  }
+  const fullNameError = validateFullName(payload.fullName);
+  if (fullNameError) fieldErrors.fullName = fullNameError;
 
-  if (!payload.mobile.trim()) {
-    fieldErrors.mobile = "Please enter your mobile number.";
-  } else if (!isValidMobile(payload.mobile)) {
-    fieldErrors.mobile = "Enter a valid 10-digit mobile number.";
-  }
+  const mobileError = validateMobile(payload.mobile);
+  if (mobileError) fieldErrors.mobile = mobileError;
 
-  if (!payload.email.trim()) {
-    fieldErrors.email = "Please enter your email address.";
-  } else if (!isValidEmail(payload.email)) {
-    fieldErrors.email = "Enter a valid email address.";
-  }
+  const emailError = validateEmail(payload.email);
+  if (emailError) fieldErrors.email = emailError;
 
   if (
     !contactPreferences.includes(
@@ -79,9 +88,8 @@ export const validateEnquiry = (
     fieldErrors.requirement = "Select your requirement.";
   }
 
-  if (!payload.locality.trim()) {
-    fieldErrors.locality = "Please enter your locality.";
-  }
+  const localityError = validateLocality(payload.locality);
+  if (localityError) fieldErrors.locality = localityError;
 
   if (!payload.consent) {
     fieldErrors.consent = "Consent is required to send this enquiry.";

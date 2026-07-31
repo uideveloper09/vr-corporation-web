@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -8,6 +10,7 @@ import ServiceAreaMap from "@/components/sections/ServiceArea/ServiceAreaMap";
 import { contactPageData, type ContactPageData } from "@/data/pages/contact";
 import { siteConfig } from "@/data/site";
 import { cx } from "@/lib/cx";
+import { consumePendingScroll, scrollToSection } from "@/lib/scrollToSection";
 
 import ContactEnquiryForm from "./ContactEnquiryForm";
 import "./ContactPage.css";
@@ -47,6 +50,10 @@ const ClockIcon = () => (
 const ContactPage = ({ data = contactPageData, className }: ContactPageProps) => {
   const { hero, form, location, faqs } = data;
 
+  useEffect(() => {
+    consumePendingScroll();
+  }, []);
+
   return (
     <div className={cx("contact-page", className)}>
       <Reveal variant="fade" eager delay={160} className="reveal--hero">
@@ -80,12 +87,13 @@ const ContactPage = ({ data = contactPageData, className }: ContactPageProps) =>
                   </span>
                   <span>{hero.primaryCta.label}</span>
                 </a>
-                <a
+                <button
+                  type="button"
                   className="contact-page__button contact-page__button--secondary"
-                  href={hero.secondaryCta.href}
+                  onClick={() => scrollToSection(form.id)}
                 >
                   <span>{hero.secondaryCta.label}</span>
-                </a>
+                </button>
               </div>
             </div>
           </Container>

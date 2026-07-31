@@ -17,7 +17,8 @@ export const contactPageData = {
     },
     secondaryCta: {
       label: "Send My Enquiry",
-      href: "#contact-form",
+      href: "/contact-us",
+      scrollTo: "contact-form",
     },
   },
   form: {

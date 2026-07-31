@@ -15,11 +15,11 @@ export const aboutPageData = {
     },
     primaryCta: {
       label: "Meet Us at the Showroom",
-      href: "/contact-us#visit-showroom",
+      href: "/contact-us",
     },
     secondaryCta: {
       label: "Start My Cooling Plan",
-      href: "/#services",
+      href: "/",
     },
   },
   story: {
@@ -173,11 +173,11 @@ export const aboutPageData = {
     titleLines: ["Let’s Make Your", "Space Feel Better."],
     primaryCta: {
       label: "Visit the Showroom",
-      href: "/contact-us#visit-showroom",
+      href: "/contact-us",
     },
     secondaryCta: {
       label: "Shape My Cooling Plan",
-      href: "/#services",
+      href: "/",
     },
   },
 } as const;
