@@ -4,17 +4,31 @@ import { useState } from "react";
 import Image from "next/image";
 
 import Container from "@/components/ui/Container";
-import { faqData } from "@/data/home/faq";
+import { faqData, type FaqIcon } from "@/data/home/faq";
 import { cx } from "@/lib/cx";
 
 import "./Faq.css";
 
-export type FaqData = typeof faqData;
+export type FaqData = {
+  number: string;
+  title: string;
+  image: {
+    src: string;
+    alt: string;
+  };
+  items: readonly {
+    id: string;
+    icon: FaqIcon;
+    question: string;
+    answer: string;
+  }[];
+};
 
 export type FaqProps = {
   data?: FaqData;
   id?: string;
   className?: string;
+  titleId?: string;
 };
 
 const AcIcon = () => (
@@ -103,7 +117,12 @@ const ChevronIcon = ({ open }: { open: boolean }) => (
   </svg>
 );
 
-const Faq = ({ data = faqData, id = "faq", className }: FaqProps) => {
+const Faq = ({
+  data = faqData,
+  id = "faq",
+  className,
+  titleId = "faq-title",
+}: FaqProps) => {
   const { number, title, image, items } = data;
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -115,7 +134,7 @@ const Faq = ({ data = faqData, id = "faq", className }: FaqProps) => {
     <section
       className={cx("faq", className)}
       id={id}
-      aria-labelledby="faq-title"
+      aria-labelledby={titleId}
     >
       <Container>
         <div className="faq__inner">
@@ -125,7 +144,7 @@ const Faq = ({ data = faqData, id = "faq", className }: FaqProps) => {
                 {number}
               </span>
 
-              <h2 id="faq-title" className="faq__title">
+              <h2 id={titleId} className="faq__title">
                 {title}
               </h2>
             </header>
@@ -133,9 +152,9 @@ const Faq = ({ data = faqData, id = "faq", className }: FaqProps) => {
             <div className="faq__accordion">
               {items.map((item) => {
                 const isOpen = openId === item.id;
-                const panelId = `faq-panel-${item.id}`;
-                const buttonId = `faq-button-${item.id}`;
-                const Icon = iconMap[item.icon as keyof typeof iconMap];
+                const panelId = `${id}-panel-${item.id}`;
+                const buttonId = `${id}-button-${item.id}`;
+                const Icon = iconMap[item.icon];
 
                 return (
                   <div

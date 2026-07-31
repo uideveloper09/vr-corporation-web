@@ -5,7 +5,6 @@ import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/ui/BackToTop";
 import WhatsAppFab from "@/components/ui/WhatsAppFab";
 import Reveal from "@/components/ui/Reveal";
-import ChatWidget from "@/components/chat";
 import JsonLd from "@/components/seo/JsonLd";
 import {
   Hero,
@@ -119,7 +118,6 @@ export default function HomePage() {
 
       <WhatsAppFab />
       <BackToTop />
-      <ChatWidget />
     </>
   );
 }

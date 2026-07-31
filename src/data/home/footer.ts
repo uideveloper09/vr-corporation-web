@@ -23,14 +23,14 @@ export const footerData = {
       icon: "people",
       title: "Our Story",
       description: "Built on trust, driven by expertise, committed to your comfort.",
-      href: "#why-vr",
+      href: "/about-us",
     },
     {
       id: "visit",
       icon: "pin",
       title: "Visit Us",
       description: "Kharkhoda,\nSonipat,\nHaryana",
-      href: "#contact",
+      href: "/contact-us",
     },
   ],
   contact: {

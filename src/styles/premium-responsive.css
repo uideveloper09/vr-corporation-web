@@ -41,7 +41,12 @@ html {
 .service-area,
 .faq,
 .final-cta,
-.contact-visit {
+.contact-visit,
+.about-page__story,
+.about-page__capabilities,
+.about-page__local,
+.about-page__clients,
+.contact-page__main {
   padding-block: var(--fluid-section-y);
 }
 
@@ -68,7 +73,9 @@ html {
 .service-area__title,
 .faq__title,
 .final-cta__title,
-.contact-visit__title {
+.contact-visit__title,
+.about-page__title,
+.contact-page__title {
   font-size: var(--fluid-heading);
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -169,7 +176,9 @@ html {
   .testimonials__cta,
   .cooling-plan__cta-button,
   .product-solutions__card-link,
-  .industry-solutions__card-link {
+  .industry-solutions__card-link,
+  .about-page__button,
+  .contact-page__button {
     min-height: var(--touch-min);
   }
 }

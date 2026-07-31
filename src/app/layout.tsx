@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 
 import SiteLoader from "@/components/ui/SiteLoader";
+import ChatWidget from "@/components/chat";
 import { homeSeo, siteConfig } from "@/data/site";
 
 import "./globals.css";
@@ -88,6 +89,7 @@ export default function RootLayout({
       <body className={inter.className} suppressHydrationWarning>
         <SiteLoader />
         {children}
+        <ChatWidget />
       </body>
     </html>
   );

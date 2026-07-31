@@ -9,10 +9,11 @@ import {
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 import BrandLogo from "@/components/brand/BrandLogo";
 import Container from "@/components/ui/Container";
-import { navigation, type NavIcon } from "@/data/navigation";
+import { navigation, type NavIcon, type NavItem } from "@/data/navigation";
 import { cx } from "@/lib/cx";
 
 import "./Header.css";
@@ -102,6 +103,8 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const menuId = useId();
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -134,9 +137,33 @@ const Header = () => {
     };
   }, [menuOpen]);
 
-  const goTo = (targetId: string) => {
+  const goToNav = (item: NavItem) => {
     setMenuOpen(false);
-    window.requestAnimationFrame(() => scrollToSection(targetId));
+
+    if (item.href.startsWith("/") && !item.href.includes("#")) {
+      router.push(item.href);
+      return;
+    }
+
+    const hash = item.href.includes("#")
+      ? item.href.slice(item.href.indexOf("#") + 1)
+      : item.targetId;
+
+    if (pathname === "/") {
+      window.requestAnimationFrame(() => scrollToSection(hash));
+      return;
+    }
+
+    router.push(`/#${hash}`);
+  };
+
+  const goToFinalCta = () => {
+    setMenuOpen(false);
+    if (pathname === "/") {
+      window.requestAnimationFrame(() => scrollToSection("final-cta"));
+      return;
+    }
+    router.push("/#final-cta");
   };
 
   const renderNavLinks = (keyPrefix: string, withIcons = false) => (
@@ -145,11 +172,11 @@ const Header = () => {
         const Icon = navIcons[item.icon];
 
         return (
-          <li key={`${keyPrefix}-${item.targetId}`} className="header__item">
+          <li key={`${keyPrefix}-${item.href}`} className="header__item">
             <button
               type="button"
               className="header__link"
-              onClick={() => goTo(item.targetId)}
+              onClick={() => goToNav(item)}
             >
               {withIcons ? (
                 <span className="header__link-icon" aria-hidden="true">
@@ -194,7 +221,7 @@ const Header = () => {
               <button
                 type="button"
                 className="header__cta"
-                onClick={() => goTo("final-cta")}
+                onClick={goToFinalCta}
               >
                 Start My Cooling Plan
               </button>
@@ -249,7 +276,7 @@ const Header = () => {
               <button
                 type="button"
                 className="header__cta header__cta--desktop"
-                onClick={() => goTo("final-cta")}
+                onClick={goToFinalCta}
               >
                 Start My Cooling Plan
               </button>

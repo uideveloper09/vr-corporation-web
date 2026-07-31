@@ -115,12 +115,12 @@ export const plannedPageSeo = {
     description:
       "Keep your cooling system running with AC repair, preventive maintenance and AMC support from V R Corporation in Kharkhoda.",
   },
-  "/about/": {
+  "/about-us/": {
     title: "About V R Corporation | Daikin Partner in Kharkhoda",
     description:
       "Meet V R Corporation, a local Daikin-authorized air-conditioning partner serving homes and businesses around Kharkhoda and Sonipat.",
   },
-  "/contact/": {
+  "/contact-us/": {
     title: "Visit V R Corporation AC Showroom in Kharkhoda",
     description:
       "Find V R Corporation in Ward No. 9, Kharkhoda. View directions, showroom hours and ways to discuss your cooling requirement.",
