@@ -46,3 +46,7 @@ next-env.d.ts
 AGENTS.md
 CLAUDE.md
 .claude/
+
+# Designer handoff packs (local reference only — do not commit or deploy)
+VR_Corporation_Other_Pages_Designer_Handoff/
+VR_Corporation_Solutions_Pages_Designer_Handoff/
