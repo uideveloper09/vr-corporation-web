@@ -26,6 +26,6 @@ export const testimonialsData = {
   },
   cta: {
     label: "See How We Earn Trust",
-    href: "#",
+    href: "/about-us",
   },
 };

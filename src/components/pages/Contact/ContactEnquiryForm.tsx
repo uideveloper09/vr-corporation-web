@@ -1,20 +1,12 @@
 "use client";
 
-import { FormEvent, useId, useState } from "react";
-import { useRouter } from "next/navigation";
+import { FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
 
+import { useEnquiryForm } from "@/components/enquiry";
 import { contactPageData } from "@/data/pages/contact";
-import type { EnquiryFailure, EnquirySuccess } from "@/lib/enquiry/types";
-import {
-  normalizeEmail,
-  normalizeFullName,
-  normalizeLocality,
-  normalizeMobile,
-  validateEmail,
-  validateFullName,
-  validateLocality,
-  validateMobile,
-} from "@/lib/validation";
+import type { RequirementValue } from "@/lib/enquiry/types";
+import { requirementValues } from "@/lib/enquiry/types";
 import { cx } from "@/lib/cx";
 
 type FormData = typeof contactPageData.form;
@@ -24,165 +16,44 @@ type ContactEnquiryFormProps = {
   className?: string;
 };
 
-type FieldKey =
-  | "name"
-  | "mobile"
-  | "email"
-  | "preference"
-  | "requirement"
-  | "locality"
-  | "consent";
-type FieldErrors = Partial<Record<FieldKey, string>>;
-
-const mapServerFieldErrors = (
-  fieldErrors: NonNullable<EnquiryFailure["fieldErrors"]>,
-): FieldErrors => ({
-  name: fieldErrors.fullName,
-  mobile: fieldErrors.mobile,
-  email: fieldErrors.email,
-  preference: fieldErrors.contactPreference,
-  requirement: fieldErrors.requirement,
-  locality: fieldErrors.locality,
-  consent: fieldErrors.consent,
-});
-
 const RequiredMark = () => (
   <span className="contact-page__required" aria-hidden="true">
     *
   </span>
 );
 
+const purposeToRequirement = (purpose: string | null) => {
+  if (!purpose) return "";
+  if (purpose === "commercial") return "commercial";
+  if ((requirementValues as readonly string[]).includes(purpose)) return purpose;
+  return "";
+};
+
 const ContactEnquiryForm = ({
   data = contactPageData.form,
   className,
 }: ContactEnquiryFormProps) => {
-  const router = useRouter();
-  const formId = useId();
-  const [name, setName] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [email, setEmail] = useState("");
-  const [preference, setPreference] = useState("");
-  const [requirement, setRequirement] = useState("");
-  const [locality, setLocality] = useState("");
-  const [message, setMessage] = useState("");
-  const [consent, setConsent] = useState(false);
-  const [website, setWebsite] = useState("");
-  const [errors, setErrors] = useState<FieldErrors>({});
-  const [formError, setFormError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-
-  const getFieldError = (field: FieldKey): string | undefined => {
-    switch (field) {
-      case "name":
-        return validateFullName(name);
-      case "mobile":
-        return validateMobile(mobile);
-      case "email":
-        return validateEmail(email);
-      case "preference":
-        return preference ? undefined : "Select a preferred contact method.";
-      case "requirement":
-        return requirement ? undefined : "Select your requirement.";
-      case "locality":
-        return validateLocality(locality);
-      case "consent":
-        return consent ? undefined : "Consent is required to send this enquiry.";
-      default:
-        return undefined;
-    }
-  };
-
-  const setFieldError = (field: FieldKey, error: string | undefined) => {
-    setErrors((prev) => {
-      if (!error) {
-        if (!prev[field]) return prev;
-        const next = { ...prev };
-        delete next[field];
-        return next;
-      }
-      if (prev[field] === error) return prev;
-      return { ...prev, [field]: error };
-    });
-  };
-
-  /** On blur: show format errors; clear when the field becomes valid. */
-  const onFieldBlur = (field: FieldKey) => {
-    setFieldError(field, getFieldError(field));
-  };
-
-  const setPreferenceAndClear = (value: string) => {
-    setPreference(value);
-    if (value) setFieldError("preference", undefined);
-  };
-
-  const setRequirementAndClear = (value: string) => {
-    setRequirement(value);
-    if (value) setFieldError("requirement", undefined);
-  };
-
-  const setConsentAndClear = (value: boolean) => {
-    setConsent(value);
-    if (value) setFieldError("consent", undefined);
-  };
-
-  const validate = (): FieldErrors => {
-    const next: FieldErrors = {};
-    (
-      ["name", "mobile", "email", "preference", "requirement", "locality", "consent"] as const
-    ).forEach((field) => {
-      const error = getFieldError(field);
-      if (error) next[field] = error;
-    });
-    return next;
-  };
+  const searchParams = useSearchParams();
+  const form = useEnquiryForm({
+    initialRequirement: purposeToRequirement(searchParams.get("purpose")),
+    requireRequirementSelect: true,
+  });
+  const formId = form.formId;
+  const { values, errors } = form;
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setFormError(null);
+    form.setFormError(null);
 
-    const nextErrors = validate();
-    setErrors(nextErrors);
+    const nextErrors = form.validateCore();
+    form.setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
-    setSubmitting(true);
-
-    try {
-      const response = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: normalizeFullName(name),
-          mobile: normalizeMobile(mobile),
-          email: normalizeEmail(email),
-          contactPreference: preference,
-          requirement,
-          locality: normalizeLocality(locality),
-          message: message.trim(),
-          consent,
-          website,
-        }),
-      });
-
-      const result = (await response.json()) as EnquirySuccess | EnquiryFailure;
-
-      if (!response.ok || !result.ok) {
-        const failure = result as EnquiryFailure;
-        if (failure.fieldErrors) {
-          setErrors(mapServerFieldErrors(failure.fieldErrors));
-        }
-        setFormError(
-          failure.error || "Could not send your enquiry. Please try again.",
-        );
-        return;
-      }
-
-      // No PII in URL — type + opaque reference only.
-      router.push(`/thank-you?type=${result.requestType}&ref=${result.reference}`);
-    } catch {
-      setFormError("Could not send your enquiry. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
+    await form.submit({
+      requirement: values.requirement as RequirementValue,
+      message: values.message.trim(),
+      source: "contact-us",
+    });
   };
 
   return (
@@ -201,8 +72,8 @@ const ContactEnquiryForm = ({
           type="text"
           tabIndex={-1}
           autoComplete="off"
-          value={website}
-          onChange={(event) => setWebsite(event.target.value)}
+          value={values.website}
+          onChange={(event) => form.setWebsite(event.target.value)}
         />
       </div>
 
@@ -215,23 +86,23 @@ const ContactEnquiryForm = ({
           id={`${formId}-${data.fields.name.id}`}
           className={cx(
             "contact-page__input",
-            errors.name && "contact-page__input--error",
+            errors.fullName && "contact-page__input--error",
           )}
           name="fullName"
           type="text"
           autoComplete="name"
           maxLength={90}
           placeholder={data.fields.name.placeholder}
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          onBlur={() => onFieldBlur("name")}
-          aria-invalid={Boolean(errors.name)}
-          aria-describedby={errors.name ? `${formId}-name-error` : undefined}
+          value={values.fullName}
+          onChange={(event) => form.setFullName(event.target.value)}
+          onBlur={() => form.onFieldBlur("fullName")}
+          aria-invalid={Boolean(errors.fullName)}
+          aria-describedby={errors.fullName ? `${formId}-name-error` : undefined}
           required
         />
-        {errors.name ? (
+        {errors.fullName ? (
           <p id={`${formId}-name-error`} className="contact-page__field-error">
-            {errors.name}
+            {errors.fullName}
           </p>
         ) : null}
       </div>
@@ -253,11 +124,11 @@ const ContactEnquiryForm = ({
           autoComplete="tel"
           maxLength={13}
           placeholder={data.fields.mobile.placeholder}
-          value={mobile}
+          value={values.mobile}
           onChange={(event) =>
-            setMobile(event.target.value.replace(/[^\d+\s-]/g, ""))
+            form.setMobile(event.target.value.replace(/[^\d+\s-]/g, ""))
           }
-          onBlur={() => onFieldBlur("mobile")}
+          onBlur={() => form.onFieldBlur("mobile")}
           aria-invalid={Boolean(errors.mobile)}
           aria-describedby={errors.mobile ? `${formId}-mobile-error` : undefined}
           required
@@ -285,9 +156,9 @@ const ContactEnquiryForm = ({
           autoComplete="email"
           inputMode="email"
           placeholder={data.fields.email.placeholder}
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          onBlur={() => onFieldBlur("email")}
+          value={values.email}
+          onChange={(event) => form.setEmail(event.target.value)}
+          onBlur={() => form.onFieldBlur("email")}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? `${formId}-email-error` : undefined}
           required
@@ -316,8 +187,11 @@ const ContactEnquiryForm = ({
                 type="radio"
                 name="contactPreference"
                 value={option.value}
-                checked={preference === option.value}
-                onChange={() => setPreferenceAndClear(option.value)}
+                checked={values.preference === option.value}
+                onChange={() => {
+                  form.setPreference(option.value);
+                  form.clearFieldError("preference");
+                }}
               />
               <span>{option.label}</span>
             </label>
@@ -343,9 +217,12 @@ const ContactEnquiryForm = ({
             errors.requirement && "contact-page__input--error",
           )}
           name="requirement"
-          value={requirement}
-          onChange={(event) => setRequirementAndClear(event.target.value)}
-          onBlur={() => onFieldBlur("requirement")}
+          value={values.requirement}
+          onChange={(event) => {
+            form.setRequirement(event.target.value);
+            if (event.target.value) form.clearFieldError("requirement");
+          }}
+          onBlur={() => form.onFieldBlur("requirement")}
           aria-invalid={Boolean(errors.requirement)}
           required
         >
@@ -379,9 +256,9 @@ const ContactEnquiryForm = ({
           type="text"
           autoComplete="address-level2"
           placeholder={data.fields.locality.placeholder}
-          value={locality}
-          onChange={(event) => setLocality(event.target.value)}
-          onBlur={() => onFieldBlur("locality")}
+          value={values.locality}
+          onChange={(event) => form.setLocality(event.target.value)}
+          onBlur={() => form.onFieldBlur("locality")}
           aria-invalid={Boolean(errors.locality)}
           required
         />
@@ -404,8 +281,8 @@ const ContactEnquiryForm = ({
           name="message"
           rows={4}
           placeholder={data.fields.message.placeholder}
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
+          value={values.message}
+          onChange={(event) => form.setMessage(event.target.value)}
         />
       </div>
 
@@ -413,8 +290,11 @@ const ContactEnquiryForm = ({
         <label className="contact-page__consent-label">
           <input
             type="checkbox"
-            checked={consent}
-            onChange={(event) => setConsentAndClear(event.target.checked)}
+            checked={values.consent}
+            onChange={(event) => {
+              form.setConsent(event.target.checked);
+              if (event.target.checked) form.clearFieldError("consent");
+            }}
             aria-invalid={Boolean(errors.consent)}
           />
           <span>
@@ -427,18 +307,18 @@ const ContactEnquiryForm = ({
         ) : null}
       </div>
 
-      {formError ? (
+      {form.formError ? (
         <p className="contact-page__form-error" role="alert">
-          {formError}
+          {form.formError}
         </p>
       ) : null}
 
       <button
         type="submit"
         className="contact-page__button contact-page__button--primary contact-page__form-submit"
-        disabled={submitting}
+        disabled={form.submitting}
       >
-        {submitting ? "Sending…" : data.submitLabel}
+        {form.submitting ? "Sending…" : data.submitLabel}
       </button>
     </form>
   );

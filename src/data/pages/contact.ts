@@ -4,7 +4,7 @@ export const contactPageData = {
   seo: {
     title: "Contact V R Corporation | Daikin Showroom in Kharkhoda",
     description:
-      "Visit the V R Corporation showroom in Kharkhoda or send your cooling requirement for review. Find address, hours and directions.",
+      "Visit V R Corporation in Kharkhoda, Sonipat or send an enquiry for Daikin cooling solutions, installation, service, AMC and commercial requirements.",
   },
   hero: {
     eyebrow: "YOUR LOCAL COOLING DESK",

@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import Container from "@/components/ui/Container";
 import { heroData } from "@/data/home/hero";
@@ -162,19 +163,19 @@ const Hero = ({ data = heroData, id, className }: HeroProps) => {
             <p className="hero__description">{description}</p>
 
             <div className="hero__actions">
-              <button
-                type="button"
+              <Link
                 className="hero__button hero__button--primary"
+                href={primaryCta.href}
               >
-                <span className="hero__button-label">{primaryCta}</span>
-              </button>
+                <span className="hero__button-label">{primaryCta.label}</span>
+              </Link>
 
-              <button
-                type="button"
+              <Link
                 className="hero__button hero__button--secondary"
+                href={secondaryCta.href}
               >
-                <span className="hero__button-label">{secondaryCta}</span>
-              </button>
+                <span className="hero__button-label">{secondaryCta.label}</span>
+              </Link>
             </div>
 
             <div className="hero__trust">

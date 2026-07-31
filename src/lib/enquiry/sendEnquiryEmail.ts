@@ -35,6 +35,7 @@ const buildEnquiryContent = (payload: EnquiryPayload, reference: string) => {
   const requirement = requirementLabels[payload.requirement];
   const locality = payload.locality.trim();
   const message = payload.message.trim() || "—";
+  const source = payload.source?.trim() || "website";
 
   const subject = `[VR Enquiry] ${requirement} — ${fullName} (${reference})`;
 
@@ -50,7 +51,7 @@ const buildEnquiryContent = (payload: EnquiryPayload, reference: string) => {
     `Locality: ${locality}`,
     `Message: ${message}`,
     `Consent: Yes`,
-    `Source: contact-us`,
+    `Source: ${source}`,
   ].join("\n");
 
   const html = `
@@ -65,7 +66,7 @@ const buildEnquiryContent = (payload: EnquiryPayload, reference: string) => {
       <tr><td><strong>Locality</strong></td><td>${escapeHtml(locality)}</td></tr>
       <tr><td><strong>Message</strong></td><td>${escapeHtml(message)}</td></tr>
       <tr><td><strong>Consent</strong></td><td>Yes</td></tr>
-      <tr><td><strong>Source</strong></td><td>contact-us</td></tr>
+      <tr><td><strong>Source</strong></td><td>${escapeHtml(source)}</td></tr>
     </table>
   `;
 
@@ -80,6 +81,7 @@ const buildEnquiryContent = (payload: EnquiryPayload, reference: string) => {
     requirement,
     locality,
     message,
+    source,
     subject,
     text,
     html,
@@ -155,7 +157,7 @@ const sendViaFormSubmit = async (
           "Content-Type": "application/json",
           Accept: "application/json",
           Origin: origin,
-          Referer: `${origin}/contact-us`,
+          Referer: `${origin}/${content.source}`,
         },
         body: JSON.stringify({
           name: content.fullName,
@@ -167,7 +169,7 @@ const sendViaFormSubmit = async (
           message: content.message,
           reference: content.reference,
           consent: "Yes",
-          source: "contact-us",
+          source: content.source,
           _subject: content.subject,
           _template: "table",
           _captcha: "false",

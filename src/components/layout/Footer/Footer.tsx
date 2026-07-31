@@ -212,21 +212,39 @@ const Footer = () => {
 
           <div className="footer__middle">
             <div className="footer__contact">
-              <a className="footer__contact-item" href={contact.phone.href}>
-                <span className="footer__contact-icon" aria-hidden="true">
-                  <PhoneIcon />
+              {contact.phone.ready && contact.phone.href ? (
+                <a className="footer__contact-item" href={contact.phone.href}>
+                  <span className="footer__contact-icon" aria-hidden="true">
+                    <PhoneIcon />
+                  </span>
+                  <span>{contact.phone.label}</span>
+                </a>
+              ) : (
+                <span className="footer__contact-item footer__contact-item--pending">
+                  <span className="footer__contact-icon" aria-hidden="true">
+                    <PhoneIcon />
+                  </span>
+                  <span>{contact.phone.label}</span>
                 </span>
-                <span>{contact.phone.label}</span>
-              </a>
+              )}
 
               <span className="footer__middle-divider" aria-hidden="true" />
 
-              <a className="footer__contact-item" href={contact.website.href}>
-                <span className="footer__contact-icon" aria-hidden="true">
-                  <GlobeIcon />
+              {contact.website.ready && contact.website.href ? (
+                <a className="footer__contact-item" href={contact.website.href}>
+                  <span className="footer__contact-icon" aria-hidden="true">
+                    <GlobeIcon />
+                  </span>
+                  <span>{contact.website.label}</span>
+                </a>
+              ) : (
+                <span className="footer__contact-item footer__contact-item--pending">
+                  <span className="footer__contact-icon" aria-hidden="true">
+                    <GlobeIcon />
+                  </span>
+                  <span>{contact.website.label}</span>
                 </span>
-                <span>{contact.website.label}</span>
-              </a>
+              )}
             </div>
 
             <span className="footer__middle-divider footer__middle-divider--social" aria-hidden="true" />
@@ -235,12 +253,26 @@ const Footer = () => {
               {socials.map((social) => {
                 const Icon = socialIcons[social.id as keyof typeof socialIcons];
 
+                if (!social.href || social.href.startsWith("#")) {
+                  return (
+                    <span
+                      key={social.id}
+                      className="footer__social footer__social--pending"
+                      aria-label={`${social.label} (coming soon)`}
+                    >
+                      <Icon />
+                    </span>
+                  );
+                }
+
                 return (
                   <a
                     key={social.id}
                     className="footer__social"
                     href={social.href}
                     aria-label={social.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <Icon />
                   </a>

@@ -10,7 +10,7 @@ export const industrySolutionsData = {
       title: "Corporate & Offices",
       description:
         "Create productive environments with quiet, energy-efficient cooling designed for meeting rooms, open offices and private cabins.",
-      href: "#",
+      href: "/commercial-cooling-solutions?industry=office",
       cta: "Engineer My Workspace",
       image: "/images/brand/01/corporate-offices.png",
       imageAlt: "Modern corporate office interior",
@@ -21,7 +21,7 @@ export const industrySolutionsData = {
       title: "Retail & Showrooms",
       description:
         "Enhance customer experience and extend dwell time with consistent comfort across showrooms, stores and shopping spaces.",
-      href: "#",
+      href: "/commercial-cooling-solutions?industry=retail",
       cta: "Cool the Customer Journey",
       image: "/images/brand/01/retail-showrooms.png",
       imageAlt: "Retail showroom interior",
@@ -32,7 +32,7 @@ export const industrySolutionsData = {
       title: "Factories & Plants",
       description:
         "Maintain ideal conditions for equipment, processes and people with robust cooling solutions built for industrial demands.",
-      href: "#",
+      href: "/commercial-cooling-solutions?industry=factory",
       cta: "Plan for Production",
       image: "/images/brand/01/factories-plants.png",
       imageAlt: "Factory and plant facility",
@@ -43,7 +43,7 @@ export const industrySolutionsData = {
       title: "Hotels & Institutions",
       description:
         "Deliver reliable comfort for guests, visitors and staff across rooms, auditoriums, dining areas and common facilities.",
-      href: "#",
+      href: "/commercial-cooling-solutions?industry=institution",
       cta: "Design for Every Guest",
       image: "/images/brand/01/hotels-institutions.png",
       imageAlt: "Hotel and institutional building",

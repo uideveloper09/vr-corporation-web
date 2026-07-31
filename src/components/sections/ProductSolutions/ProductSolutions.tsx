@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { ReactElement } from "react";
 
 import Container from "@/components/ui/Container";
+import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { productSolutionsData } from "@/data/home/productSolutions";
 import { cx } from "@/lib/cx";
@@ -112,7 +113,11 @@ const ProductSolutions = ({
             description={description}
           />
 
-          <div className="product-solutions__grid">
+          <Reveal
+            variant="up"
+            delay={80}
+            className="reveal--stagger product-solutions__grid"
+          >
             {cards.map((card) => {
               const Icon = cardIcons[card.id] ?? HomeIcon;
 
@@ -151,7 +156,7 @@ const ProductSolutions = ({
                 </article>
               );
             })}
-          </div>
+          </Reveal>
         </div>
       </Container>
     </section>

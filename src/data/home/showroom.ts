@@ -11,6 +11,6 @@ export const showroomData = {
   },
   cta: {
     label: "Step Inside V R",
-    href: "#",
+    href: "/about-us",
   },
 };

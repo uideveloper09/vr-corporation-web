@@ -32,7 +32,7 @@ export const toSheetEnquiryRow = (
   locality: payload.locality.trim(),
   message: payload.message.trim(),
   consent: payload.consent ? "Yes" : "No",
-  source: "contact-us",
+  source: payload.source?.trim() || "website",
 });
 
 /**

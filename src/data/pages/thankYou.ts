@@ -72,7 +72,7 @@ export const thankYouPageData = {
     {
       id: "solutions",
       label: "Explore Cooling Solutions",
-      href: "/#product-solutions",
+      href: "/cooling-solutions",
       variant: "secondary" as const,
     },
     {

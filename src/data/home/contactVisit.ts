@@ -33,19 +33,23 @@ export const contactVisitData = {
   address: siteConfig.address.formatted,
   hours: `Open ${siteConfig.hours.display}`,
   primaryCta: {
-    label: "Call the Cooling Desk",
-    href: phoneHref,
+    label: phoneReady ? "Call the Cooling Desk" : "Send an Enquiry",
+    href: phoneReady ? phoneHref : "/contact-us",
   },
   secondaryCta: {
-    label: "Chat About My Space",
-    href: "#final-cta",
+    label: phoneReady ? "Chat About My Space" : "Visit & Contact",
+    href: phoneReady
+      ? buildWhatsAppHref(phoneDigits, DEFAULT_WHATSAPP_MESSAGE)
+      : "/contact-us",
   },
   whatsapp: {
     label: "WhatsApp the Cooling Desk",
     phoneDigits,
     ready: phoneReady,
     prefill: DEFAULT_WHATSAPP_MESSAGE,
-    href: buildWhatsAppHref(phoneDigits, DEFAULT_WHATSAPP_MESSAGE),
+    href: phoneReady
+      ? buildWhatsAppHref(phoneDigits, DEFAULT_WHATSAPP_MESSAGE)
+      : "/contact-us",
   },
   coordinates: {
     label: "Kharkhoda Coordinates",

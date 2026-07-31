@@ -42,6 +42,7 @@ export const parseEnquiryBody = (body: unknown): EnquiryPayload | null => {
     locality: typeof data.locality === "string" ? data.locality : "",
     message: typeof data.message === "string" ? data.message : "",
     consent: data.consent === true,
+    source: typeof data.source === "string" ? data.source.trim() : "",
     website: typeof data.website === "string" ? data.website : "",
   };
 };

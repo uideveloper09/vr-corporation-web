@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import Container from "@/components/ui/Container";
+import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { whyVrData } from "@/data/home/whyVr";
 import { cx } from "@/lib/cx";
@@ -39,7 +40,11 @@ const WhyVr = ({
             description={description}
           />
 
-          <div className="why-vr__grid">
+          <Reveal
+            variant="up"
+            delay={80}
+            className="reveal--stagger why-vr__grid"
+          >
             {items.map((item) => (
               <article key={item.id} className="why-vr__item">
                 <span className="why-vr__icon" aria-hidden="true">
@@ -58,7 +63,7 @@ const WhyVr = ({
                 <p className="why-vr__item-description">{item.description}</p>
               </article>
             ))}
-          </div>
+          </Reveal>
         </div>
       </Container>
     </section>

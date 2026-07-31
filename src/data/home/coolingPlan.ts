@@ -37,7 +37,7 @@ export const coolingPlanData = {
   },
   cta: {
     labelLines: ["Shape My", "Cooling Plan"],
-    href: "#contact-cta",
+    href: "/find-my-ideal-ac",
     image: "/images/brand/04/shape-my-cooling-plan.png",
     imageAlt: "Shape my cooling plan",
   },

@@ -106,7 +106,11 @@ const ThankYouPage = ({
               </div>
             </header>
 
-            <ol className="thank-you-page__steps">
+            <Reveal
+              variant="up"
+              delay={80}
+              className="reveal--stagger thank-you-page__steps"
+            >
               {data.nextSteps.items.map((step) => (
                 <li key={step.id} className="thank-you-page__step">
                   <span className="thank-you-page__step-number" aria-hidden="true">
@@ -115,7 +119,7 @@ const ThankYouPage = ({
                   <p className="thank-you-page__step-title">{step.title}</p>
                 </li>
               ))}
-            </ol>
+            </Reveal>
 
             <p className="thank-you-page__notice">{data.notice}</p>
           </Container>

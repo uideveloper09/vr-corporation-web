@@ -208,6 +208,12 @@ const ContactVisit = ({
               <a
                 className="contact-visit__button contact-visit__button--secondary"
                 href={secondaryCta.href}
+                target={secondaryCta.href.startsWith("http") ? "_blank" : undefined}
+                rel={
+                  secondaryCta.href.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
               >
                 <span className="contact-visit__button-badge" aria-hidden="true">
                   <ChatIcon />

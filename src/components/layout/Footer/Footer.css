@@ -264,6 +264,15 @@
   color: #9ec5ff;
 }
 
+.footer__contact-item--pending {
+  cursor: default;
+  opacity: 0.78;
+}
+
+.footer__contact-item--pending:hover {
+  color: #ffffff;
+}
+
 .footer__contact-item:focus-visible {
   outline: 2px solid #3aa0ff;
   outline-offset: 3px;
@@ -320,6 +329,16 @@
 .footer__social:hover {
   border-color: #6eb6ff;
   background: rgba(58, 160, 255, 0.1);
+}
+
+.footer__social--pending {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.footer__social--pending:hover {
+  border-color: rgba(58, 160, 255, 0.75);
+  background: transparent;
 }
 
 .footer__social:focus-visible {

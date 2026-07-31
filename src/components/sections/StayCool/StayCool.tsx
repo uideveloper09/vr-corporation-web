@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import Container from "@/components/ui/Container";
+import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { stayCoolData } from "@/data/home/stayCool";
 import { cx } from "@/lib/cx";
@@ -166,7 +167,11 @@ const StayCool = ({
             description={description}
           />
 
-          <ul className="stay-cool__grid">
+          <Reveal
+            variant="up"
+            delay={80}
+            className="reveal--stagger stay-cool__grid"
+          >
             {items.map((item) => (
               <li key={item.id} className="stay-cool__item">
                 <span className="stay-cool__icon" aria-hidden="true">
@@ -188,7 +193,7 @@ const StayCool = ({
                 <p className="stay-cool__item-description">{item.description}</p>
               </li>
             ))}
-          </ul>
+          </Reveal>
         </div>
       </Container>
     </section>

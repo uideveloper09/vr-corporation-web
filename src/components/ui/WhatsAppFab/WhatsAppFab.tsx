@@ -20,13 +20,17 @@ const WhatsAppFab = () => {
     <a
       className="whatsapp-fab"
       href={whatsapp.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={whatsapp.label}
+      target={whatsapp.ready ? "_blank" : undefined}
+      rel={whatsapp.ready ? "noopener noreferrer" : undefined}
+      aria-label={
+        whatsapp.ready
+          ? whatsapp.label
+          : "Contact V R Corporation — WhatsApp number pending"
+      }
       title={
         whatsapp.ready
           ? whatsapp.label
-          : "WhatsApp — update the Cooling Desk number in contact details"
+          : "WhatsApp number pending — open Contact instead"
       }
     >
       <span className="whatsapp-fab__glow" aria-hidden="true" />

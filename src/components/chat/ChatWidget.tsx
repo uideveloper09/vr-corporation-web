@@ -499,13 +499,15 @@ const ChatWidget = () => {
                   const isWhatsApp = /whats\s*app/i.test(item);
 
                   if (isWhatsApp) {
+                    const whatsappReady = contactVisitData.whatsapp.ready;
+
                     return (
                       <a
                         key={item}
                         className="chat-widget__chip chat-widget__chip--whatsapp"
                         href={contactVisitData.whatsapp.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        target={whatsappReady ? "_blank" : undefined}
+                        rel={whatsappReady ? "noopener noreferrer" : undefined}
                         onClick={() => {
                           void send(item);
                         }}

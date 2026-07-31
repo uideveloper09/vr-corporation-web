@@ -2,13 +2,13 @@ export const navigation = [
   {
     label: "Cooling Solutions",
     targetId: "product-solutions",
-    href: "/#product-solutions",
+    href: "/cooling-solutions",
     icon: "snowflake" as const,
   },
   {
     label: "Care Plans",
     targetId: "services",
-    href: "/#services",
+    href: "/ac-service-amc",
     icon: "shield" as const,
   },
   {

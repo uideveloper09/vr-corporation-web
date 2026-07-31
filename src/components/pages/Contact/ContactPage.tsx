@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
@@ -113,7 +113,9 @@ const ContactPage = ({ data = contactPageData, className }: ContactPageProps) =>
                   title={form.title}
                   description={form.intro}
                 />
-                <ContactEnquiryForm data={form} />
+                <Suspense fallback={null}>
+                  <ContactEnquiryForm data={form} />
+                </Suspense>
               </div>
 
               <aside

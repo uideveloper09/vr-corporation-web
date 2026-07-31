@@ -1,4 +1,5 @@
 import Container from "@/components/ui/Container";
+import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { testimonialsData } from "@/data/home/testimonials";
 import { cx } from "@/lib/cx";
@@ -91,7 +92,11 @@ const Testimonials = ({
             description={description}
           />
 
-          <ul className="testimonials__grid">
+          <Reveal
+            variant="up"
+            delay={80}
+            className="reveal--stagger testimonials__grid"
+          >
             {cards.map((card) => (
               <li key={card.id} className="testimonials__card">
                 <span className="testimonials__quote-badge" aria-hidden="true">
@@ -111,7 +116,7 @@ const Testimonials = ({
                 <p className="testimonials__quote">{card.quote}</p>
               </li>
             ))}
-          </ul>
+          </Reveal>
 
           <div className="testimonials__footer">
             <p className="testimonials__trust">

@@ -92,35 +92,35 @@ export const aboutPageData = {
         id: "home-cooling",
         title: "Home Cooling",
         description: "Quiet, efficient comfort for bedrooms and living spaces.",
-        href: "/#product-solutions",
+        href: "/cooling-solutions?type=split-ac",
       },
       {
         id: "multi-room",
         title: "Multi-Room & Commercial Systems",
         description:
           "Uniform comfort across rooms, offices and larger commercial spaces.",
-        href: "/#industry-solutions",
+        href: "/commercial-cooling-solutions",
       },
       {
         id: "installation",
         title: "Installation & Replacement",
         description:
           "Planned installs and upgrades executed with care for your space.",
-        href: "/#services",
+        href: "/ac-service-amc",
       },
       {
         id: "amc",
         title: "Repair / Maintenance / AMC",
         description:
           "Seasonal care and support to keep systems running smoothly.",
-        href: "/#services",
+        href: "/ac-service-amc?service=amc",
       },
       {
         id: "consultation",
         title: "HVAC Consultation",
         description:
           "Clear guidance before you choose the right cooling direction.",
-        href: "/#services",
+        href: "/contact-us",
       },
     ],
   },

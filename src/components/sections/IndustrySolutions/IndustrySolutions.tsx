@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import Container from "@/components/ui/Container";
+import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { industrySolutionsData } from "@/data/home/industrySolutions";
 import { cx } from "@/lib/cx";
@@ -91,7 +92,11 @@ const IndustrySolutions = ({
             description={description}
           />
 
-          <div className="industry-solutions__grid">
+          <Reveal
+            variant="up"
+            delay={80}
+            className="reveal--stagger industry-solutions__grid"
+          >
             {cards.map((card) => (
               <article key={card.id} className="industry-solutions__card">
                 <div className="industry-solutions__card-media">
@@ -133,7 +138,7 @@ const IndustrySolutions = ({
                 </div>
               </article>
             ))}
-          </div>
+          </Reveal>
 
           <div className="industry-solutions__footer">
             <div className="industry-solutions__footer-lead">

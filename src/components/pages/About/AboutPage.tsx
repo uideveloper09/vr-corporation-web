@@ -236,7 +236,11 @@ const AboutPage = ({ data = aboutPageData, className }: AboutPageProps) => {
               title={story.title}
             />
 
-            <ol className="about-page__story-steps">
+            <Reveal
+              variant="up"
+              delay={80}
+              className="reveal--stagger about-page__story-steps"
+            >
               {story.steps.map((step) => (
                 <li key={step.id} className="about-page__story-step">
                   <span className="about-page__story-number" aria-hidden="true">
@@ -246,7 +250,7 @@ const AboutPage = ({ data = aboutPageData, className }: AboutPageProps) => {
                   <p className="about-page__story-step-text">{step.text}</p>
                 </li>
               ))}
-            </ol>
+            </Reveal>
           </Container>
         </section>
       </Reveal>
@@ -254,7 +258,11 @@ const AboutPage = ({ data = aboutPageData, className }: AboutPageProps) => {
       <Reveal variant="up" delay={60}>
         <section className="about-page__pillars" aria-label="Why customers stay with V R">
           <Container>
-            <ul className="about-page__pillars-grid">
+            <Reveal
+              variant="up"
+              delay={80}
+              className="reveal--stagger about-page__pillars-grid"
+            >
               {pillars.map((pillar) => (
                 <li key={pillar.id} className="about-page__pillar">
                   <span className="about-page__pillar-icon" aria-hidden="true">
@@ -270,7 +278,7 @@ const AboutPage = ({ data = aboutPageData, className }: AboutPageProps) => {
                   <p className="about-page__pillar-text">{pillar.description}</p>
                 </li>
               ))}
-            </ul>
+            </Reveal>
           </Container>
         </section>
       </Reveal>
@@ -290,7 +298,11 @@ const AboutPage = ({ data = aboutPageData, className }: AboutPageProps) => {
               title={capabilities.title}
             />
 
-            <ul className="about-page__capabilities-list">
+            <Reveal
+              variant="up"
+              delay={80}
+              className="reveal--stagger about-page__capabilities-list"
+            >
               {capabilities.items.map((item) => {
                 const Icon = capabilityIcons[item.id] ?? HomeIcon;
 
@@ -310,7 +322,7 @@ const AboutPage = ({ data = aboutPageData, className }: AboutPageProps) => {
                   </li>
                 );
               })}
-            </ul>
+            </Reveal>
           </Container>
         </section>
       </Reveal>
@@ -328,7 +340,11 @@ const AboutPage = ({ data = aboutPageData, className }: AboutPageProps) => {
               description={local.description}
             />
 
-            <div className="about-page__local-places">
+            <Reveal
+              variant="up"
+              delay={80}
+              className="reveal--stagger about-page__local-places"
+            >
               {local.places.map((place, index) => (
                 <article
                   key={place.id}
@@ -345,7 +361,7 @@ const AboutPage = ({ data = aboutPageData, className }: AboutPageProps) => {
                   <p className="about-page__local-place-detail">{place.detail}</p>
                 </article>
               ))}
-            </div>
+            </Reveal>
 
             <div className="about-page__local-bar">
               <div className="about-page__local-details">

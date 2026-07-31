@@ -9,14 +9,14 @@ export const footerData = {
       icon: "snowflake",
       title: "Cooling Solutions",
       description: "Smart, efficient and advanced cooling solutions for every space.",
-      href: "#services",
+      href: "/cooling-solutions",
     },
     {
       id: "care",
       icon: "shield",
       title: "Care Plans",
       description: "Reliable maintenance plans that keep your cooling running at its best.",
-      href: "#services",
+      href: "/ac-service-amc",
     },
     {
       id: "story",
@@ -36,17 +36,19 @@ export const footerData = {
   contact: {
     phone: {
       label: "Phone to be confirmed",
-      href: "tel:+910000000000",
+      href: null as string | null,
+      ready: false,
     },
     website: {
       label: "Website domain to be confirmed",
-      href: "#",
+      href: null as string | null,
+      ready: false,
     },
   },
   socials: [
-    { id: "facebook", label: "Facebook", href: "#" },
-    { id: "instagram", label: "Instagram", href: "#" },
-    { id: "youtube", label: "YouTube", href: "#" },
+    { id: "facebook", label: "Facebook", href: null as string | null },
+    { id: "instagram", label: "Instagram", href: null as string | null },
+    { id: "youtube", label: "YouTube", href: null as string | null },
   ],
   taglines: [
     "Thoughtful cooling.",

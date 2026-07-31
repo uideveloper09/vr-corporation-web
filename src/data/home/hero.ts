@@ -6,9 +6,15 @@ export const heroData = {
   description:
     "From the first site visit to years of dependable care, we shape the right Daikin cooling solution around the way you live and work.",
 
-  primaryCta: "Find My Ideal AC",
+  primaryCta: {
+    label: "Find My Ideal AC",
+    href: "/find-my-ideal-ac",
+  },
 
-  secondaryCta: "Plan a Site Visit",
+  secondaryCta: {
+    label: "Plan a Site Visit",
+    href: "/site-visit",
+  },
 
   trustText: "No guesswork. Just the right cooling plan.",
 

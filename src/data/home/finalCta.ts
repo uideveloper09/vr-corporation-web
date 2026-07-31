@@ -3,10 +3,10 @@ export const finalCtaData = {
   titleLines: ["Let's Make Your", "Space Feel Better."],
   primaryCta: {
     label: "Plan My Comfort",
-    href: "#services",
+    href: "/cooling-solutions",
   },
   secondaryCta: {
     label: "Visit the Showroom",
-    href: "#showroom",
+    href: "/contact-us",
   },
 };

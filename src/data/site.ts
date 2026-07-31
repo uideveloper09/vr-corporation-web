@@ -85,45 +85,52 @@ export const homeSeo = {
 } as const;
 
 /**
- * Planned page SEO map (blueprint §2 / §5).
- * Only publish a route when that page has real, useful content.
+ * Page SEO map.
+ * Published routes use handoff-approved titles/descriptions.
+ * Remaining blueprint URLs stay here until those pages ship with real content.
  */
 export const plannedPageSeo = {
   "/": homeSeo,
-  "/daikin-ac/": {
-    title: "Daikin AC Solutions in Kharkhoda | V R Corporation",
+  "/cooling-solutions/": {
+    title: "Daikin Cooling Solutions in Kharkhoda, Sonipat | V R Corporation",
     description:
-      "Compare Daikin cooling solutions for homes, offices and commercial spaces with local guidance from V R Corporation in Kharkhoda.",
+      "Explore Daikin split, inverter, VRV/VRF, ducted, chiller and AHU cooling directions from V R Corporation in Kharkhoda, Sonipat.",
   },
+  "/ac-service-amc/": {
+    title: "AC Service, Installation & AMC in Kharkhoda | V R Corporation",
+    description:
+      "Request AC installation, repair inspection, preventive maintenance or AMC support from V R Corporation in Kharkhoda and nearby Sonipat areas.",
+  },
+  "/commercial-cooling-solutions/": {
+    title: "Commercial AC & HVAC Solutions in Kharkhoda, Sonipat | V R Corporation",
+    description:
+      "Plan Daikin VRV/VRF, ducted, chiller and AHU cooling directions for offices, showrooms, plants and institutions with V R Corporation.",
+  },
+  "/about-us/": {
+    title: "About V R Corporation | Daikin Authorized Partner in Kharkhoda",
+    description:
+      "Learn about V R Corporation, a Daikin Authorized Partner helping homes and businesses with planned cooling solutions in Kharkhoda and Sonipat.",
+  },
+  "/contact-us/": {
+    title: "Contact V R Corporation | Daikin Showroom in Kharkhoda",
+    description:
+      "Visit V R Corporation in Kharkhoda, Sonipat or send an enquiry for Daikin cooling solutions, installation, service, AMC and commercial requirements.",
+  },
+  "/privacy-policy/": {
+    title: "Privacy Policy | V R Corporation",
+    description:
+      "How V R Corporation may collect, use and protect information shared through the website and enquiry forms.",
+  },
+  "/terms-and-disclaimer/": {
+    title: "Terms & Website Disclaimer | V R Corporation",
+    description:
+      "How website information, enquiries and service requests from V R Corporation should be understood before confirmation.",
+  },
+  /** Not published yet — keep drafts until content is ready. */
   "/split-inverter-ac/": {
     title: "Split & Inverter AC Dealer in Kharkhoda | V R",
     description:
       "Find the right Daikin split or inverter AC for your room, usage and comfort goals. Visit V R Corporation in Kharkhoda.",
-  },
-  "/commercial-ac/": {
-    title: "Commercial AC & VRV/VRF Solutions in Sonipat | V R",
-    description:
-      "Plan VRV/VRF, ductable AC, chiller and AHU solutions for commercial spaces with V R Corporation's local HVAC guidance.",
-  },
-  "/ac-installation/": {
-    title: "AC Installation in Kharkhoda | V R Corporation",
-    description:
-      "Plan a professional AC site visit and installation in Kharkhoda with clear guidance on placement, capacity and readiness.",
-  },
-  "/ac-repair-amc/": {
-    title: "AC Repair, Maintenance & AMC in Kharkhoda | V R",
-    description:
-      "Keep your cooling system running with AC repair, preventive maintenance and AMC support from V R Corporation in Kharkhoda.",
-  },
-  "/about-us/": {
-    title: "About V R Corporation | Daikin Partner in Kharkhoda",
-    description:
-      "Meet V R Corporation, a local Daikin-authorized air-conditioning partner serving homes and businesses around Kharkhoda and Sonipat.",
-  },
-  "/contact-us/": {
-    title: "Visit V R Corporation AC Showroom in Kharkhoda",
-    description:
-      "Find V R Corporation in Ward No. 9, Kharkhoda. View directions, showroom hours and ways to discuss your cooling requirement.",
   },
   "/areas-we-serve/": {
     title: "AC Services in Kharkhoda & Nearby Areas | V R Corporation",

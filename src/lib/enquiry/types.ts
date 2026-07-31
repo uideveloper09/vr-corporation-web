@@ -32,6 +32,8 @@ export type EnquiryPayload = {
   locality: string;
   message: string;
   consent: boolean;
+  /** Page/form path for ops — e.g. contact-us, site-visit */
+  source?: string;
   /** Honeypot — must stay empty. */
   website?: string;
 };
