@@ -43,6 +43,37 @@
   line-height: 1.6;
 }
 
+.solutions-page__section-intro--products {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 0.45rem;
+  max-width: none;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.solutions-page__section-intro-sep {
+  color: #9aabcd;
+  font-weight: 700;
+}
+
+.solutions-page__tabs--products {
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin-bottom: 1.35rem;
+  padding-bottom: 0.15rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.solutions-page__tabs--products .solutions-page__tab {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .solutions-page__button {
   display: inline-flex;
   align-items: center;
@@ -710,6 +741,178 @@
 
 .solutions-page__card:hover .solutions-page__card-cta .solutions-page__button--primary {
   transform: translateY(-1px);
+}
+
+/* Product catalog cards — Daikin logo/product shots need contain, not cover */
+.solutions-page__cards--products {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+.solutions-page__card--product {
+  min-width: 0;
+  background: #ffffff;
+}
+
+.solutions-page__card-media--product {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 11.5rem;
+  min-height: 11.5rem;
+  max-height: 11.5rem;
+  padding: 1rem 1.25rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
+  border-bottom: 1px solid #e8eef5;
+}
+
+.solutions-page__card-image--product {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  /* Drop baked-in white photo backgrounds against the card media */
+  mix-blend-mode: multiply;
+  transform: none;
+}
+
+.solutions-page__card--product:hover .solutions-page__card-image--product {
+  transform: scale(1.03);
+}
+
+.solutions-page__card--product .solutions-page__card-title {
+  font-size: 1.05rem;
+  word-break: break-word;
+}
+
+.solutions-page__card--product .solutions-page__card-copy {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.solutions-page__product-specs {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.solutions-page__product-specs li {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.solutions-page__product-spec-label {
+  color: #7a8aa8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.solutions-page__product-spec-value {
+  color: #243552;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.solutions-page__card--product .solutions-page__card-cta .solutions-page__button {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.875rem;
+  padding-inline: 1rem;
+}
+
+@media (max-width: 79.99rem) {
+  .solutions-page__cards--products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .solutions-page__card-media--product {
+    height: 10.75rem;
+    min-height: 10.75rem;
+    max-height: 10.75rem;
+  }
+}
+
+@media (max-width: 63.99rem) {
+  .solutions-page__section-intro--products {
+    flex-wrap: wrap;
+    white-space: normal;
+    overflow: visible;
+    row-gap: 0.2rem;
+  }
+
+  .solutions-page__product-specs li {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .solutions-page__product-spec-label {
+    font-size: 0.6875rem;
+  }
+
+  .solutions-page__product-spec-value {
+    font-size: 0.8125rem;
+  }
+
+  .solutions-page__card--product .solutions-page__card-title {
+    font-size: 1rem;
+  }
+
+  .solutions-page__card--product .solutions-page__card-body {
+    padding: 1rem 1rem 1.15rem;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .solutions-page__cards--products {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .solutions-page__card-media--product {
+    height: 10.25rem;
+    min-height: 10.25rem;
+    max-height: 10.25rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .solutions-page__tabs--products {
+    margin-inline: -0.15rem;
+    padding-inline: 0.15rem;
+  }
+
+  .solutions-page__tab {
+    min-height: 2.5rem;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8125rem;
+  }
+
+  .solutions-page__product-specs li {
+    grid-template-columns: 5.25rem minmax(0, 1fr);
+  }
+
+  .solutions-page__card--product .solutions-page__card-cta .solutions-page__button {
+    min-height: var(--touch-min, 2.75rem);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

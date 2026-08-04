@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type CSSProperties,
+} from "react";
 
 import { cx } from "@/lib/cx";
 
@@ -29,35 +36,45 @@ const Reveal = ({
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
+  useLayoutEffect(() => {
+    if (!eager) return;
+
+    const show = () => setVisible(true);
+    const ready = document.documentElement.dataset.appReady === "true";
+
+    if (ready) {
+      if (delay <= 0) {
+        show();
+        return;
+      }
+      const id = window.setTimeout(show, delay);
+      return () => window.clearTimeout(id);
+    }
+
+    const onReady = () => {
+      window.setTimeout(show, delay);
+    };
+    window.addEventListener("vr:app-ready", onReady, { once: true });
+    const poll = window.setInterval(() => {
+      if (document.documentElement.dataset.appReady === "true") {
+        window.clearInterval(poll);
+        onReady();
+      }
+    }, 80);
+
+    return () => {
+      window.removeEventListener("vr:app-ready", onReady);
+      window.clearInterval(poll);
+    };
+  }, [delay, eager]);
+
   useEffect(() => {
+    if (eager) return;
+
     const node = ref.current;
     if (!node) return;
 
     const show = () => setVisible(true);
-
-    if (eager) {
-      const ready = document.documentElement.dataset.appReady === "true";
-      if (ready) {
-        const id = window.setTimeout(show, delay);
-        return () => window.clearTimeout(id);
-      }
-
-      const onReady = () => {
-        window.setTimeout(show, delay);
-      };
-      window.addEventListener("vr:app-ready", onReady, { once: true });
-      // Fallback if event already missed
-      const poll = window.setInterval(() => {
-        if (document.documentElement.dataset.appReady === "true") {
-          window.clearInterval(poll);
-          onReady();
-        }
-      }, 80);
-      return () => {
-        window.removeEventListener("vr:app-ready", onReady);
-        window.clearInterval(poll);
-      };
-    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -73,7 +90,7 @@ const Reveal = ({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [delay, eager, once]);
+  }, [eager, once]);
 
   const style = {
     "--reveal-delay": `${delay}ms`,

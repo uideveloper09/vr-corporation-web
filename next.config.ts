@@ -11,6 +11,20 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: projectRoot,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "daikinindia.com",
+        pathname: "/sites/default/files/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.daikinindia.com",
+        pathname: "/sites/default/files/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

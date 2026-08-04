@@ -90,8 +90,54 @@ const PinIcon = () => (
   </svg>
 );
 
+const GridIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <rect
+      x="4.5"
+      y="4.5"
+      width="6"
+      height="6"
+      rx="1.2"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+    />
+    <rect
+      x="13.5"
+      y="4.5"
+      width="6"
+      height="6"
+      rx="1.2"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+    />
+    <rect
+      x="4.5"
+      y="13.5"
+      width="6"
+      height="6"
+      rx="1.2"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+    />
+    <rect
+      x="13.5"
+      y="13.5"
+      width="6"
+      height="6"
+      rx="1.2"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+    />
+  </svg>
+);
+
 const navIcons: Record<NavIcon, () => ReactElement> = {
   snowflake: SnowflakeIcon,
+  grid: GridIcon,
   shield: ShieldIcon,
   people: PeopleIcon,
   pin: PinIcon,
@@ -168,16 +214,23 @@ const Header = () => {
     router.push("/");
   };
 
+  const isNavActive = (href: string) => {
+    if (!href.startsWith("/")) return false;
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   const renderNavLinks = (keyPrefix: string, withIcons = false) => (
     <ul className="header__list">
       {navigation.map((item) => {
         const Icon = navIcons[item.icon];
+        const active = isNavActive(item.href);
 
         return (
           <li key={`${keyPrefix}-${item.href}`} className="header__item">
             <button
               type="button"
-              className="header__link"
+              className={cx("header__link", active && "header__link--active")}
+              aria-current={active ? "page" : undefined}
               onClick={() => goToNav(item)}
             >
               {withIcons ? (

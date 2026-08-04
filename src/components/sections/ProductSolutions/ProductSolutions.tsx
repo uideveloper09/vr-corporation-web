@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactElement } from "react";
 
 import Container from "@/components/ui/Container";
@@ -17,9 +18,9 @@ export type ProductSolutionsProps = {
   className?: string;
 };
 
-const LinkArrow = () => (
+const LinkArrow = ({ className }: { className?: string }) => (
   <svg
-    className="product-solutions__card-arrow"
+    className={className ?? "product-solutions__card-arrow"}
     viewBox="0 0 20 12"
     aria-hidden="true"
     focusable="false"
@@ -94,7 +95,7 @@ const ProductSolutions = ({
   id = "product-solutions",
   className,
 }: ProductSolutionsProps) => {
-  const { number, eyebrow, title, description, cards } = data;
+  const { number, eyebrow, title, description, headerCta, cards } = data;
 
   return (
     <section
@@ -111,6 +112,14 @@ const ProductSolutions = ({
             eyebrow={eyebrow}
             title={title}
             description={description}
+            action={
+              <Link className="product-solutions__header-link" href={headerCta.href}>
+                <span className="product-solutions__header-link-text">
+                  {headerCta.label}
+                </span>
+                <LinkArrow className="product-solutions__header-link-arrow" />
+              </Link>
+            }
           />
 
           <Reveal

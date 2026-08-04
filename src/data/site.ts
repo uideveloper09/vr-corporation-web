@@ -96,6 +96,11 @@ export const plannedPageSeo = {
     description:
       "Explore Daikin split, inverter, VRV/VRF, ducted, chiller and AHU cooling directions from V R Corporation in Kharkhoda, Sonipat.",
   },
+  "/products/": {
+    title: "Daikin AC Products in Kharkhoda, Sonipat | V R Corporation",
+    description:
+      "Explore Daikin Split, Cassette, Floor Standing, Ducted, VRV, Chillers, Refrigeration, Roof Top, FCU, Ceiling Suspended, Control Systems and Air Purifier products from V R Corporation in Kharkhoda, Sonipat.",
+  },
   "/ac-service-amc/": {
     title: "AC Service, Installation & AMC in Kharkhoda | V R Corporation",
     description:

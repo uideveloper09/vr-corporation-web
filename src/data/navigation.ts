@@ -6,6 +6,12 @@ export const navigation = [
     icon: "snowflake" as const,
   },
   {
+    label: "Products",
+    targetId: "products",
+    href: "/products",
+    icon: "grid" as const,
+  },
+  {
     label: "Care Plans",
     targetId: "services",
     href: "/ac-service-amc",

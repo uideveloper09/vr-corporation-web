@@ -8,6 +8,8 @@ type SectionHeadingProps = {
   number?: string;
   eyebrow?: string;
   description?: ReactNode;
+  /** Optional action (e.g. section CTA link), rendered after intro */
+  action?: ReactNode;
   /** Wrap title/eyebrow/description in `__intro` (default true) */
   withIntro?: boolean;
   className?: string;
@@ -20,6 +22,7 @@ const SectionHeading = ({
   number,
   eyebrow,
   description,
+  action,
   withIntro = true,
   className,
 }: SectionHeadingProps) => {
@@ -38,6 +41,7 @@ const SectionHeading = ({
       {description ? (
         <p className={`${prefix}__description`}>{description}</p>
       ) : null}
+      {action}
     </div>
   ) : (
     <>
@@ -46,6 +50,7 @@ const SectionHeading = ({
       {description ? (
         <p className={`${prefix}__description`}>{description}</p>
       ) : null}
+      {action}
     </>
   );
 

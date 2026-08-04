@@ -4,6 +4,10 @@ export const productSolutionsData = {
   title: "Not Every Room Needs the Same Answer.",
   description:
     "Tell us about the space. We’ll help match capacity, comfort and efficiency so every room gets the cooling it actually needs.",
+  headerCta: {
+    label: "View Products",
+    href: "/products",
+  },
   cards: [
     {
       id: "home-comfort",
